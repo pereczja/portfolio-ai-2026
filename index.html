@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI 2026: A döntés éve | 1337 Partners</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'PP Editorial Old';
+            src: local('PP Editorial Old'), local('Georgia');
+            font-weight: 400;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #FBFAF4;
+            --surface: #EAEBE4;
+            --text: #111111;
+            --purple: #783FF3;
+            --orange: #FA7E00;
+            --stone-muted: #78716c;
+            --stone-dark: #44403c;
+            --slide-pad-y: 48px;
+            --slide-pad-x: 72px;
+        }
+
+        body {
+            font-family: 'DM Mono', Consolas, monospace;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .slide {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: none;
+            flex-direction: column;
+            padding: var(--slide-pad-y) var(--slide-pad-x);
+            padding-bottom: 56px;
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        .slide.active { display: flex; opacity: 1; }
+        .slide.dark { background: var(--text); color: var(--bg); }
+        .slide.iframe-slide { padding: 0; }
+        .slide.iframe-slide iframe { width: 100%; height: 100%; border: none; position: absolute; inset: 0; }
+
+        h1 {
+            font-family: 'PP Editorial Old', Georgia, serif;
+            font-size: 64px; font-weight: 400; line-height: 1.1;
+        }
+        h2 {
+            font-family: 'PP Editorial Old', Georgia, serif;
+            font-size: 48px; font-weight: 400; line-height: 1.15; margin-bottom: 12px;
+        }
+        h3 {
+            font-family: 'PP Editorial Old', Georgia, serif;
+            font-size: 24px; font-weight: 400; margin-bottom: 8px;
+        }
+        p { font-size: 20px; line-height: 1.5; max-width: 900px; }
+
+        .muted { color: var(--stone-muted); }
+        .purple { color: var(--purple); }
+        .orange { color: var(--orange); }
+
+        .logo { height: 48px; margin-bottom: 24px; }
+        .stamp { position: absolute; bottom: 30px; right: 50px; width: 80px; opacity: 0.4; }
+        .slide.dark .stamp { filter: brightness(0) invert(1); }
+
+        .center {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .center h1, .center h2, .center p { max-width: 900px; }
+
+        .tagline {
+            font-size: 14px; text-transform: uppercase;
+            letter-spacing: 3px; color: var(--stone-muted); margin-bottom: 20px;
+        }
+        .divider { width: 60px; height: 2px; background: var(--stone-muted); margin: 32px 0; }
+
+        .source { position: absolute; bottom: 32px; left: var(--slide-pad-x); font-size: 12px; color: var(--stone-muted); }
+
+        /* So What Box */
+        .so-what {
+            background: var(--text); color: var(--bg);
+            padding: 16px 28px; border-radius: 8px; margin-top: auto;
+            display: flex; align-items: center; gap: 16px;
+            flex-shrink: 0;
+        }
+        .so-what-label { font-family: 'PP Editorial Old', Georgia, serif; font-size: 20px; color: var(--orange); white-space: nowrap; }
+        .so-what p { color: var(--bg); font-size: 18px; max-width: none; line-height: 1.4; }
+
+        /* Merged Chart */
+        .merged-chart-container { flex: 1; display: flex; justify-content: center; align-items: center; min-height: 0; }
+        .merged-chart-container svg { width: 100%; max-width: 900px; height: auto; }
+        .axis-label { font-family: 'DM Mono', monospace; font-size: 12px; fill: var(--stone-muted); }
+        .level-label { font-family: 'DM Mono', monospace; font-size: 11px; }
+        .year-marker { font-family: Georgia, serif; font-size: 14px; font-weight: bold; }
+
+        /* K-Shaped Chart */
+        .k-chart svg { width: 100%; height: 100%; }
+        .k-line { fill: none; stroke-width: 5; stroke-linecap: round; }
+        .k-line-up { stroke: var(--purple); }
+        .k-line-down { stroke: var(--orange); }
+        .k-label { font-family: 'PP Editorial Old', Georgia, serif; }
+        .k-label-up { fill: var(--purple); }
+        .k-label-down { fill: var(--orange); }
+        .k-annotation { font-family: 'DM Mono', monospace; fill: var(--stone-muted); }
+
+        /* Transition */
+        .transition-slide { justify-content: center; align-items: center; text-align: center; }
+        .transition-text {
+            font-family: 'PP Editorial Old', Georgia, serif;
+            font-size: 56px; font-style: italic; color: var(--bg);
+            max-width: 800px; line-height: 1.3;
+        }
+
+        /* Personal Story */
+        .timeline-comparison { display: grid; grid-template-columns: 1fr 44px 1fr; gap: 14px; }
+        .timeline-column { background: var(--surface); border-radius: 10px; padding: 20px; overflow: hidden; display: flex; flex-direction: column; }
+        .timeline-column.past { border-top: 4px solid var(--orange); }
+        .timeline-column.present { border-top: 4px solid var(--purple); }
+        .timeline-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .timeline-year { font-family: 'PP Editorial Old', Georgia, serif; font-size: 28px; }
+        .timeline-label-small { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--stone-muted); }
+        .timeline-divider { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .vs-badge { background: var(--text); color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-size: 14px; font-weight: bold; }
+        .process-step { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .process-step:last-child { border-bottom: none; }
+        .step-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .step-icon.human { background: #fef3c7; }
+        .step-icon.ai { background: #ddd6fe; }
+        .step-icon.wait { background: #fee2e2; }
+        .step-content { flex: 1; }
+        .step-title { font-size: 16px; font-weight: 500; margin-bottom: 2px; }
+        .step-desc { font-size: 13px; color: var(--stone-muted); }
+        .step-time { font-size: 14px; color: var(--stone-muted); text-align: right; min-width: 60px; }
+        .summary-row { display: flex; justify-content: space-around; padding: 12px; background: white; border-radius: 8px; margin-top: auto; }
+        .summary-item { text-align: center; }
+        .summary-value { font-family: 'PP Editorial Old', Georgia, serif; font-size: 26px; }
+        .summary-value.bad { color: var(--orange); }
+        .summary-value.good { color: var(--purple); }
+        .summary-label { font-size: 11px; color: var(--stone-muted); text-transform: uppercase; }
+
+        /* Navigation */
+        .nav-dots { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 100; }
+        .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--stone-muted); opacity: 0.3; cursor: pointer; transition: all 0.2s; }
+        .nav-dot.active { opacity: 1; background: var(--purple); }
+        .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 50px; height: 80px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0.2; transition: opacity 0.2s; z-index: 100; font-size: 28px; color: var(--stone-muted); }
+        .nav-arrow:hover { opacity: 0.6; }
+        .nav-arrow.prev { left: 16px; }
+        .nav-arrow.next { right: 16px; }
+        .slide-number { position: fixed; bottom: 20px; right: 50px; font-size: 13px; color: var(--stone-muted); z-index: 100; }
+
+        /* Desktop medium */
+        @media (max-height: 800px) {
+            :root { --slide-pad-y: 32px; --slide-pad-x: 48px; }
+            h1 { font-size: 52px; }
+            h2 { font-size: 40px; }
+            .transition-text { font-size: 44px; }
+            .step-title { font-size: 14px; }
+            .step-desc { font-size: 12px; }
+            .step-time { font-size: 12px; }
+            .timeline-year { font-size: 24px; }
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 768px) {
+            :root { --slide-pad-y: 20px; --slide-pad-x: 20px; }
+
+            .slide { overflow-y: auto; overflow-x: hidden; padding-bottom: 48px; }
+
+            h1 { font-size: 32px; }
+            h2 { font-size: 26px; margin-bottom: 8px; }
+            h3 { font-size: 18px; }
+            p { font-size: 14px; }
+
+            .logo { height: 32px; margin-bottom: 16px; }
+            .tagline { font-size: 11px; letter-spacing: 2px; margin-bottom: 12px; }
+            .divider { margin: 16px 0; }
+            .stamp { width: 40px; bottom: 14px; right: 20px; }
+            .source { font-size: 10px; bottom: 14px; left: var(--slide-pad-x); }
+
+            .so-what { padding: 12px 16px; gap: 10px; flex-direction: column; align-items: flex-start; }
+            .so-what-label { font-size: 16px; }
+            .so-what p { font-size: 13px; }
+
+            .transition-text { font-size: 28px; max-width: 90%; }
+
+            /* Grid overrides for mobile */
+            .mobile-stack { grid-template-columns: 1fr !important; }
+
+            /* Timeline mobile */
+            .timeline-comparison { grid-template-columns: 1fr; gap: 8px; }
+            .timeline-divider { display: none; }
+            .timeline-column { padding: 14px; }
+            .timeline-year { font-size: 22px; }
+            .timeline-label-small { font-size: 11px; }
+            .step-icon { width: 26px; height: 26px; font-size: 12px; }
+            .step-title { font-size: 13px; }
+            .step-desc { font-size: 11px; }
+            .step-time { font-size: 11px; min-width: 50px; }
+            .summary-value { font-size: 20px; }
+            .summary-label { font-size: 9px; }
+
+            /* Nav */
+            .nav-arrow { display: none; }
+            .nav-dots { gap: 5px; bottom: 10px; }
+            .nav-dot { width: 6px; height: 6px; }
+            .slide-number { bottom: 10px; right: 20px; font-size: 11px; }
+
+            /* Capability overhang mobile overlay */
+            .slide.iframe-slide .mobile-hide { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SLIDE 1: TITLE -->
+    <div class="slide active center">
+        <img src="assets/1337 logo.png" alt="1337" class="logo">
+        <p class="tagline">The Intelligence Company</p>
+        <h1>AI 2026:<br><span class="purple">A döntés éve</span></h1>
+        <div class="divider" style="margin: 24px auto;"></div>
+        <p class="muted" style="font-size: 18px;">Pereczes János | Portfolio AI in Business | 2026. március 18.</p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 2: DORSUM — december-shift (IFRAME) -->
+    <div class="slide iframe-slide">
+        <iframe src="https://1337-decks.vercel.app/coding-agents/december-shift.html" loading="lazy"></iframe>
+    </div>
+
+    <!-- SLIDE 3: HYPE + WBW -->
+    <div class="slide">
+        <h2>Két ábrát kell megérteni.</h2>
+        <div class="mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; min-height: 0; margin-top: 8px;">
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; border-radius: 10px; overflow: hidden;">
+                <img src="assets/hype-cycle.png" alt="Gartner Hype Cycle" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; border-radius: 10px; overflow: hidden;">
+                <img src="assets/wbw-intelligence.png" alt="Wait But Why AI Intelligence" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 4: PERCEPTION GAP -->
+    <div class="slide">
+        <h2>A Perception Gap</h2>
+        <div class="merged-chart-container">
+            <svg viewBox="0 0 900 380" preserveAspectRatio="xMidYMid meet">
+                <rect x="80" y="20" width="780" height="310" fill="white" rx="8" stroke="#eee"/>
+                <text x="25" y="175" class="axis-label" transform="rotate(-90, 25, 175)" fill="#2563eb">Expectations</text>
+                <text x="880" y="175" class="axis-label" transform="rotate(90, 880, 175)" fill="#dc2626">Capability</text>
+                <path d="M 100 275 Q 150 275 200 220 Q 260 85 320 58 Q 380 35 420 85 Q 480 170 560 245 Q 640 290 720 265 Q 800 220 840 205" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+                <path d="M 100 295 Q 200 290 300 275 Q 400 250 480 190 Q 540 135 580 72 Q 620 40 700 30" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+                <polygon points="700,30 690,47 710,47" fill="#dc2626"/>
+                <rect x="100" y="345" width="20" height="4" fill="#2563eb"/>
+                <text x="125" y="350" class="level-label" fill="#2563eb">Hype / Várakozás</text>
+                <rect x="300" y="345" width="20" height="4" fill="#dc2626"/>
+                <text x="325" y="350" class="level-label" fill="#dc2626">Reality / Képesség</text>
+                <text x="310" y="48" class="level-label" fill="#2563eb" font-size="12">Peak Hype (2023)</text>
+                <text x="520" y="275" class="level-label" fill="#2563eb" font-size="12">Trough (2026)</text>
+                <text x="620" y="48" class="level-label" fill="#dc2626" font-size="12">Einstein+</text>
+                <line x1="560" y1="30" x2="560" y2="320" stroke="#FA7E00" stroke-width="3" stroke-dasharray="8,4"/>
+                <rect x="565" y="105" width="140" height="70" fill="#FA7E00" opacity="0.15" rx="4"/>
+                <line x1="560" y1="80" x2="560" y2="240" stroke="#FA7E00" stroke-width="8" opacity="0.2"/>
+                <text x="580" y="133" font-family="Georgia, serif" font-size="18" fill="#FA7E00" font-weight="bold">PERCEPTION</text>
+                <text x="580" y="158" font-family="Georgia, serif" font-size="18" fill="#FA7E00" font-weight="bold">GAP</text>
+                <circle cx="560" cy="240" r="11" fill="#2563eb" stroke="white" stroke-width="3"/>
+                <circle cx="560" cy="80" r="11" fill="#dc2626" stroke="white" stroke-width="3"/>
+                <text x="530" y="368" class="year-marker" fill="#FA7E00" font-size="15">2026</text>
+            </svg>
+        </div>
+        <div class="so-what">
+            <span class="so-what-label">So what?</span>
+            <p>Aki most kiábrándul, az a legrosszabb pillanatban áll le. A tech kész — a kérdés az, ki veszi észre időben.</p>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 5: DORSUM — Exponential 5 (IFRAME) -->
+    <div class="slide iframe-slide">
+        <iframe src="https://1337-decks.vercel.app/coding-agents/exponential-slide-5.html" loading="lazy"></iframe>
+    </div>
+
+    <!-- SLIDE 6: DORSUM — Exponential 6 (IFRAME) + Rekurzivitás overlay -->
+    <div class="slide iframe-slide" style="position: relative;">
+        <iframe src="https://1337-decks.vercel.app/coding-agents/exponential-slide-6.html" loading="lazy"></iframe>
+        <div style="position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; align-items: center; gap: 20px; background: rgba(0,0,0,0.82); backdrop-filter: blur(10px); padding: 18px 32px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); max-width: 90%;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="140" height="16" viewBox="0 0 1024.2 115" style="flex-shrink: 0; opacity: 0.8;" class="mobile-hide">
+                <path fill="#FBFAF4" d="M250.649,23.3494h37.328V113.094h23.825V23.3494H349.13V1.9061H250.649Z"/>
+                <path fill="#FBFAF4" d="M208.557,79.7376,158.522,1.9061H131.519V113.094h23.032V35.2624l50.035,77.8316h27.002V1.9061H208.557Z"/>
+                <path fill="#FBFAF4" d="M444.434,46.2224H392.017V1.9061H368.191V113.094h23.826V67.6657h52.417V113.094H468.26V1.9061H444.434Z"/>
+                <path fill="#FBFAF4" d="M44.3163,1.9061,0,113.094H24.779l9.0634-23.3495H80.2061L89.268,113.094h24.779L69.7307,1.9061ZM41.8575,69.0953l15.166-39.0746L72.19,69.0953Z"/>
+                <path fill="#FBFAF4" d="M665.698,0c-32.086,0-54.8,23.826-54.8,57.6588,0,33.5152,22.714,57.3412,54.8,57.3412,31.926,0,54.482-23.826,54.482-57.3412C720.18,23.826,697.624,0,665.698,0Zm0,92.7624c-18.744,0-30.18-13.3425-30.18-35.1036,0-22.0787,11.436-35.4212,30.18-35.4212,18.584,0,29.861,13.3425,29.861,35.4212C695.559,79.42,684.282,92.7624,665.698,92.7624Z"/>
+                <path fill="#FBFAF4" d="M998.785,75.7666c-4.13,10.8011-12.39,16.9958-23.668,16.9958-18.743,0-30.179-13.3425-30.179-35.1036,0-22.0787,11.436-35.4212,30.179-35.4212,11.278,0,19.538,6.1947,23.668,16.9958h25.255C1017.85,15.4075,999.261,0,975.117,0c-32.085,0-54.799,23.826-54.799,57.6588C920.318,91.174,943.032,115,975.117,115,999.42,115,1018,99.4337,1024.2,75.7666Z"/>
+                <path fill="#FBFAF4" d="M846.934,1.9061,891.25,113.094h24.302L871.236,1.9061Z"/>
+                <path fill="#FBFAF4" d="M796.74,1.9061H742.417V113.094h23.826V72.7486H796.74c25.256,0,40.663-13.3425,40.663-35.4213S821.996,1.9061,796.74,1.9061Zm-1.112,49.3991H766.243V23.3494h29.385c11.755,0,17.949,4.7652,17.949,13.9779S807.383,51.3052,795.628,51.3052Z"/>
+                <path fill="#FBFAF4" d="M592.631,35.7389c0-20.9668-15.407-33.8328-40.663-33.8328H497.645V113.094h23.826V69.5718h26.525l23.827,43.5222h26.368L571.807,66.2568C585.05,61.166,592.631,50.4459,592.631,35.7389Zm-71.16-12.39h29.385c11.754,0,17.949,4.2887,17.949,12.39s-6.195,12.39-17.949,12.39H521.471Z"/>
+            </svg>
+            <p style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 22px; color: rgba(251,250,244,0.95); max-width: none; line-height: 1.3; font-style: italic;">
+                Amit látunk az elmúlt 3 hónapban — az már <span style="color: var(--orange);">rekurzivitás</span>?
+            </p>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: K-SHAPED + CHAMATH -->
+    <div class="slide">
+        <h2>K-alakú divergencia</h2>
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; gap: 24px;">
+            <div style="height: 300px; width: 100%;">
+                <svg viewBox="0 0 1000 250" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%;">
+                    <line x1="60" y1="125" x2="520" y2="125" stroke="#EAEBE4" stroke-width="2" stroke-dasharray="4"/>
+                    <line x1="60" y1="125" x2="160" y2="125" stroke="#78716c" stroke-width="5" stroke-linecap="round"/>
+                    <circle cx="160" cy="125" r="8" fill="#111111"/>
+                    <path d="M 160 125 Q 280 85 420 20" class="k-line k-line-up"/>
+                    <text x="440" y="32" class="k-label k-label-up" font-size="22">Power userek: +32% produktivitás</text>
+                    <path d="M 160 125 Q 280 165 420 230" class="k-line k-line-down"/>
+                    <text x="440" y="234" class="k-label k-label-down" font-size="22">Lemaradók: 95% AI projekt nem hoz ROI-t</text>
+                    <text x="60" y="245" class="k-annotation" font-size="14">2024</text>
+                    <text x="160" y="245" class="k-annotation" font-size="14">2025</text>
+                    <text x="420" y="245" class="k-annotation" font-size="14">2026</text>
+                </svg>
+            </div>
+            <div style="background: var(--surface); padding: 28px 36px; border-radius: 12px; border-left: 6px solid var(--orange);">
+                <p style="font-family: Georgia, serif; font-size: 26px; font-style: italic; line-height: 1.4; color: var(--text); max-width: none;">
+                    "2025 was supposed to be the year of agents. So far it's been the year of letdowns."
+                </p>
+                <p style="font-size: 14px; color: var(--stone-muted); margin-top: 10px;">— Chamath Palihapitiya, 2025</p>
+            </div>
+        </div>
+        <p class="source">Forrás: Harvard/BCG 2024, NBER 2026, CNBC</p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 8: CAPABILITY OVERHANG -->
+    <div class="slide">
+        <h2>Capability Overhang</h2>
+        <div class="mobile-stack" style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; flex: 1; min-height: 0; margin-top: 8px;">
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 0; background: #111; border-radius: 12px; padding: 12px;">
+                <img src="assets/openai-tweet.png" alt="OpenAI Tweet" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center;">
+                <div style="background: var(--surface); padding: 28px; border-radius: 12px; border-left: 5px solid var(--purple);">
+                    <h3 style="font-size: 22px; color: var(--purple); margin-bottom: 10px;">Mi ez?</h3>
+                    <p style="font-size: 18px; line-height: 1.5; color: var(--stone-dark); max-width: none;">
+                        A modellek többre képesek, mint ahogy használjuk. A gap a <strong>használatban</strong> van.
+                    </p>
+                </div>
+                <div style="background: var(--surface); padding: 28px; border-radius: 12px; border-left: 5px solid var(--orange);">
+                    <h3 style="font-size: 22px; color: var(--orange); margin-bottom: 10px;">2026 Prediction</h3>
+                    <p style="font-size: 18px; line-height: 1.5; color: var(--stone-dark); max-width: none;">
+                        Az AI-úton annyira fontos <em>segíteni jól használni</em>, mint a modellek fejlesztése.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 9: TRANSITION -->
+    <div class="slide dark transition-slide">
+        <p class="transition-text">Nézzük meg konkrétumok szintjén.</p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 10: PERSONAL STORY -->
+    <div class="slide">
+        <h2>Hogyan készültem erre az előadásra?</h2>
+        <div style="flex: 1; display: flex; align-items: center; min-height: 0; margin-top: 8px;">
+        <div class="timeline-comparison" style="width: 100%;">
+            <div class="timeline-column past">
+                <div class="timeline-header">
+                    <span class="timeline-year" style="color: var(--orange);">2024</span>
+                    <span class="timeline-label-small">Portfolio konf.</span>
+                </div>
+                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Brief készítés</div><div class="step-desc">Mit akarok mondani</div></div><div class="step-time">2-3 óra</div></div>
+                <div class="process-step"><div class="step-icon human">&#x1f465;</div><div class="step-content"><div class="step-title">2 kolléga: Kutatás, design</div><div class="step-desc">Adatok, vizualizáció</div></div><div class="step-time">1-2 nap</div></div>
+                <div class="process-step"><div class="step-icon wait">&#x23f3;</div><div class="step-content"><div class="step-title">Várakozás</div><div class="step-desc">Amíg elkészül...</div></div><div class="step-time">—</div></div>
+                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Feedback, javítás</div><div class="step-desc">Ezt ide, azt oda húzni</div></div><div class="step-time">fél nap</div></div>
+                <div class="process-step"><div class="step-icon human">&#x1f465;</div><div class="step-content"><div class="step-title">Kollégák: Átdolgozás</div><div class="step-desc">Javítások beépítése</div></div><div class="step-time">fél nap</div></div>
+                <div class="summary-row">
+                    <div class="summary-item"><div class="summary-value bad">3 fő</div><div class="summary-label">Csapat</div></div>
+                    <div class="summary-item"><div class="summary-value bad">~20%</div><div class="summary-label">Kreatív idő</div></div>
+                </div>
+            </div>
+            <div class="timeline-divider"><div class="vs-badge">VS</div></div>
+            <div class="timeline-column present">
+                <div class="timeline-header">
+                    <span class="timeline-year" style="color: var(--purple);">2026</span>
+                    <span class="timeline-label-small">Ez az előadás</span>
+                </div>
+                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Átgondolom mit mondok</div><div class="step-desc">Üzenetek, struktúra</div></div><div class="step-time">1-2 óra</div></div>
+                <div class="process-step"><div class="step-icon ai">&#x1f916;</div><div class="step-content"><div class="step-title">AI agent: Első draft</div><div class="step-desc">Kutatás, slide-ok, vizualizáció</div></div><div class="step-time">~percek</div></div>
+                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Iteráció az AI-jal</div><div class="step-desc">"Ezt másképp", "Add hozzá"</div></div><div class="step-time">1-2 óra</div></div>
+                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Gondolkodás, készülés</div><div class="step-desc">Hogyan adjam át? Mi a fő üzenet?</div></div><div class="step-time">Végre van időm!</div></div>
+                <div class="summary-row">
+                    <div class="summary-item"><div class="summary-value good">1 fő</div><div class="summary-label">Csapat</div></div>
+                    <div class="summary-item"><div class="summary-value good">~80%</div><div class="summary-label">Kreatív idő</div></div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 11: DORSUM — Coding Agents (IFRAME) + Logo overlays -->
+    <div class="slide iframe-slide" style="position: relative;">
+        <iframe src="https://1337-decks.vercel.app/coding-agents/coding-agents-slide.html" loading="lazy"></iframe>
+        <div style="position: absolute; bottom: 60px; left: 40px; z-index: 10; display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+            <img src="assets/claude-logo.svg" alt="Claude" style="height: 28px; filter: brightness(0) invert(1);">
+            <span style="font-family: 'DM Mono', monospace; font-size: 15px; color: white; font-weight: 500;">Code</span>
+        </div>
+        <div style="position: absolute; bottom: 60px; right: 40px; z-index: 10; display: flex; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="white" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <span style="font-family: 'DM Mono', monospace; font-size: 15px; color: white; font-weight: 500;">Craft Agents</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+                <img src="assets/claude-logo.svg" alt="Claude" style="height: 28px; filter: brightness(0) invert(1);">
+                <span style="font-family: 'DM Mono', monospace; font-size: 15px; color: white; font-weight: 500;">Cowork</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 12-13: DORSUM — AI Érettségi (IFRAME) -->
+    <div class="slide iframe-slide">
+        <iframe src="https://1337-decks.vercel.app/coding-agents/ai-erettsegi-modell.html" loading="lazy"></iframe>
+    </div>
+    <div class="slide iframe-slide">
+        <iframe src="https://1337-decks.vercel.app/coding-agents/ai-erettsegi-modell-2.html" loading="lazy"></iframe>
+    </div>
+
+    <!-- SLIDE 14: TRANSITION -->
+    <div class="slide dark transition-slide">
+        <p class="transition-text">Nézzünk rá másik szemszögből.</p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 15: TOKEN EVOLUTION + SWE-BENCH -->
+    <div class="slide">
+        <h2>Az agent 30x több compute-ot eszik</h2>
+        <div class="mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; flex: 1; min-height: 0; margin-top: 12px;">
+            <div style="display: flex; flex-direction: column; justify-content: center; gap: 20px; min-height: 0;">
+                <div style="display: flex; justify-content: center; align-items: flex-end; gap: 32px;">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <div style="width: 120px; height: 80px; background: var(--surface); border-radius: 8px 8px 0 0; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 32px;">1x</span>
+                        </div>
+                        <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 20px;">Chatbot</span>
+                        <span style="font-size: 14px; color: var(--stone-muted);">$0.01/feladat</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <div style="width: 120px; height: 160px; background: var(--orange); border-radius: 8px 8px 0 0; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 32px; color: white;">5x</span>
+                        </div>
+                        <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 20px;">Reasoning</span>
+                        <span style="font-size: 14px; color: var(--stone-muted);">$0.10/feladat</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <div style="width: 120px; height: 320px; background: var(--purple); border-radius: 8px 8px 0 0; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 36px; color: white;">30x</span>
+                        </div>
+                        <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 20px;">Agent</span>
+                        <span style="font-size: 14px; color: var(--stone-muted);">$5-8/feladat</span>
+                    </div>
+                </div>
+                <div style="background: var(--text); color: var(--bg); padding: 16px 24px; border-radius: 8px; text-align: center; flex-shrink: 0;">
+                    <p style="font-size: 18px; color: var(--bg); max-width: none; line-height: 1.4;">Saját példám: Claude API <strong style="color: var(--orange); font-size: 22px;">€2,700/hó</strong> — 26x szubvenció</p>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px; min-height: 0;">
+                <h3 style="font-size: 20px; color: var(--purple); margin-bottom: 0;">SWE-bench Verified</h3>
+                <div style="background: #1a1a2e; border-radius: 10px; padding: 8px; flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0;">
+                    <img src="assets/swebench.png" alt="SWE-bench" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px;">
+                </div>
+            </div>
+        </div>
+        <p class="source">Forrás: SWE-bench Verified 2026, Építési Napló #7</p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 16: HUNGARY -->
+    <div class="slide">
+        <h2>Magyarország versenyképességi hátránya</h2>
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; min-height: 0;">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 16px;">
+                    <span style="font-size: 20px; font-weight: 500; text-align: right;">Románia</span>
+                    <div style="height: 56px; background: var(--surface); border-radius: 6px; overflow: hidden;"><div style="height: 100%; width: 100%; background: var(--purple); border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px;"><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: white;">200 MW</span></div></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 16px;">
+                    <span style="font-size: 20px; font-weight: 500; text-align: right;">Lengyelország</span>
+                    <div style="height: 56px; background: var(--surface); border-radius: 6px; overflow: hidden;"><div style="height: 100%; width: 97%; background: var(--stone-dark); border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px;"><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: white;">194 MW</span></div></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 16px;">
+                    <span style="font-size: 22px; font-weight: 600; text-align: right;">Magyarország</span>
+                    <div style="height: 56px; background: var(--surface); border-radius: 6px; display: flex; align-items: center; padding-left: 16px; gap: 12px;"><div style="width: 6px; height: 100%; background: var(--orange); border-radius: 6px 0 0 6px; flex-shrink: 0;"></div><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--orange); font-weight: bold;">1 MW</span></div>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 16px; color: var(--stone-muted); max-width: none;">AI-specifikus adatközponti kapacitás (MW)</p>
+            <p style="text-align: center; font-size: 18px; color: var(--stone-dark); max-width: none; margin-top: 8px;">Nincs dedikált szuverén AI-infrastruktúra</p>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 17: TRANSITION -->
+    <div class="slide dark transition-slide">
+        <p class="transition-text">És mi lesz az emberekkel?</p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 18: WORKFORCE -->
+    <div class="slide">
+        <h2>Hogyan fog lefutni?</h2>
+        <div style="flex: 1; display: flex; align-items: center; min-height: 0;">
+            <div class="mobile-stack" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%;">
+                <div style="background: var(--orange); color: white; padding: 28px; border-radius: 12px; display: flex; flex-direction: column;">
+                    <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 48px; margin-bottom: 8px;">1</div>
+                    <h3 style="color: white; font-size: 22px; margin-bottom: 12px;">Pályakezdők</h3>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.5; max-width: none;">Junior pozíciók eltűnnek. Nincs kontextus, nincs hely.</p>
+                    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.25); display: flex; gap: 20px;">
+                        <div style="text-align: center;"><div style="font-family: Georgia, serif; font-size: 32px; font-weight: bold;">-30%</div><div style="font-size: 12px; opacity: 0.8;">Goldman junior</div></div>
+                        <div style="text-align: center;"><div style="font-family: Georgia, serif; font-size: 32px; font-weight: bold;">10x</div><div style="font-size: 12px; opacity: 0.8;">AI-native output</div></div>
+                    </div>
+                </div>
+                <div style="background: var(--surface); padding: 28px; border-radius: 12px; border-top: 5px solid var(--orange); display: flex; flex-direction: column;">
+                    <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 48px; color: var(--orange); margin-bottom: 8px;">2</div>
+                    <h3 style="font-size: 22px; margin-bottom: 12px;">Tech + back office</h3>
+                    <p style="color: var(--stone-dark); font-size: 16px; line-height: 1.5; max-width: none;">Hiring freeze. Csendes leépítés. Block kimondta hangosan.</p>
+                    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; color: var(--stone-muted);">Csendes munkanélküliség — USA + EU</div>
+                </div>
+                <div style="background: var(--surface); padding: 28px; border-radius: 12px; border-top: 5px solid var(--stone-muted); display: flex; flex-direction: column;">
+                    <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 48px; color: var(--stone-muted); margin-bottom: 8px;">3</div>
+                    <h3 style="font-size: 22px; margin-bottom: 12px;">Teljes gazdaság</h3>
+                    <p style="color: var(--stone-dark); font-size: 16px; line-height: 1.5; max-width: none;">Lassabban, de jön. Csapatméretek mindenhol csökkennek.</p>
+                    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; color: var(--stone-muted);">A kérdés: mikor ér el hozzátok?</div>
+                </div>
+            </div>
+        </div>
+        <div class="so-what">
+            <span class="so-what-label">So what?</span>
+            <p>"Nem az AI veszi el a junior állást. A senior veszi el, aki AI-t használ."</p>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 19: MIT TEHETÜNK -->
+    <div class="slide">
+        <h2>Mit tehetünk?</h2>
+        <div style="flex: 1; display: flex; align-items: center; min-height: 0;">
+            <div class="mobile-stack" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%;">
+                <div style="background: var(--surface); padding: 32px; border-radius: 12px; border-top: 5px solid var(--purple); display: flex; flex-direction: column;">
+                    <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 52px; color: var(--purple); margin-bottom: 12px;">01</div>
+                    <h3 style="font-size: 24px; margin-bottom: 12px;">Tapasztalat</h3>
+                    <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Kerülj a K tetejére. 2 nap befektetés, azonnali hatás.</p>
+                    <div style="margin-top: auto; padding-top: 16px;"><div style="background: white; padding: 12px 16px; border-radius: 8px; text-align: center;"><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--purple);">$3.70–$10.30</span><span style="display: block; font-size: 12px; color: var(--stone-muted);">ROI per dollár (IDC/Microsoft)</span></div></div>
+                </div>
+                <div style="background: var(--surface); padding: 32px; border-radius: 12px; border-top: 5px solid var(--orange); display: flex; flex-direction: column;">
+                    <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 52px; color: var(--orange); margin-bottom: 12px;">02</div>
+                    <h3 style="font-size: 24px; margin-bottom: 12px;">Újragondolás</h3>
+                    <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Ne foltozás. Szervezd újra a munkát és az adatokat.</p>
+                    <div style="margin-top: auto; padding-top: 16px;"><div style="background: white; padding: 12px 16px; border-radius: 8px;"><div style="background: #FFF9C4; padding: 10px 14px; border-radius: 2px; box-shadow: 2px 3px 8px rgba(0,0,0,0.1);"><p style="font-size: 13px; color: #333; max-width: none;">"2 órás beszélgetés alatt <strong>teljes appot</strong> raktunk össze."</p></div></div></div>
+                </div>
+                <div style="background: var(--surface); padding: 32px; border-radius: 12px; border-top: 5px solid var(--text); display: flex; flex-direction: column;">
+                    <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 52px; color: var(--text); margin-bottom: 12px;">03</div>
+                    <h3 style="font-size: 24px; margin-bottom: 12px;">Szuverén kapacitás</h3>
+                    <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Országosan kell. Nekünk van kutatásunk erre.</p>
+                    <div style="margin-top: auto; padding-top: 16px;"><div style="background: white; padding: 12px 16px; border-radius: 8px; text-align: center;"><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--purple);">77–80 MW</span><span style="display: block; font-size: 12px; color: var(--stone-muted);">becsült szükséglet</span></div></div>
+                </div>
+            </div>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- SLIDE 20: QR CLOSING -->
+    <div class="slide center">
+        <img src="assets/1337 logo.png" alt="1337" class="logo" style="height: 56px; margin-bottom: 32px;">
+        <p class="tagline">The Intelligence Company</p>
+        <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); margin: 32px 0;">
+            <img src="assets/qr-epitesinaplo.png" alt="QR Code" style="width: 200px; height: 200px;">
+        </div>
+        <p style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 28px; color: var(--purple); margin-bottom: 6px;">Építési Napló</p>
+        <p style="font-size: 18px; color: var(--stone-muted);">epitesinaplo.substack.com</p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-arrow prev" onclick="prevSlide()">&#x2039;</div>
+    <div class="nav-arrow next" onclick="nextSlide()">&#x203a;</div>
+    <div class="nav-dots" id="navDots"></div>
+    <div class="slide-number" id="slideNumber"></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        const navDots = document.getElementById('navDots');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(i);
+            navDots.appendChild(dot);
+        }
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) slide.classList.add('active');
+            });
+            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+            document.getElementById('slideNumber').textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } }
+        function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
+        function goToSlide(index) { currentSlide = index; updateSlide(); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+            else if (e.key === 'f' || e.key === 'F') {
+                document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+            }
+            else if (e.key >= '1' && e.key <= '9') { const i = parseInt(e.key) - 1; if (i < totalSlides) goToSlide(i); }
+            else if (e.key === '0') goToSlide(9);
+        });
+
+        // Touch/Swipe navigation
+        let touchStartX = 0;
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                if (dx < 0) nextSlide();
+                else prevSlide();
+            }
+        }, { passive: true });
+
+        // Also allow tap on left/right halves
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.nav-dot, .nav-arrow, a, button, iframe')) return;
+            const x = e.clientX / window.innerWidth;
+            if (x > 0.7) nextSlide();
+            else if (x < 0.3) prevSlide();
+        });
+
+        updateSlide();
+    </script>
+</body>
+</html>
