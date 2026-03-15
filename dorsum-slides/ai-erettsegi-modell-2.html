@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Érettségi Modell – Sokszorozódás | 1337</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #FBFAF4;
+    color: #111111;
+    font-family: 'DM Mono', 'Consolas', monospace;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    max-width: 1440px;
+    max-height: 900px;
+    padding: 48px 64px 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .slide-title span:first-child { font-style: italic; }
+
+  .slide-subtitle {
+    font-size: 13px;
+    color: #78716c;
+    margin-bottom: 36px;
+    letter-spacing: 0.2px;
+  }
+
+  .levels-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    min-height: 0;
+  }
+
+  .level-panel {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    background: #EAEBE4;
+    padding: 24px 22px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .level-panel.highlight {
+    background: #783FF3;
+    color: white;
+  }
+
+  .level-panel.future {
+    background: transparent;
+    border: 2px dashed #78716c;
+  }
+
+  /* Header */
+  .panel-header {
+    margin-bottom: 12px;
+  }
+
+  .panel-role {
+    font-size: 11px;
+    color: #78716c;
+    margin-top: 4px;
+    letter-spacing: 0.2px;
+  }
+  .level-panel.highlight .panel-role { color: rgba(255,255,255,0.55); }
+  .level-panel.future .panel-role { color: #78716c; opacity: 0.7; }
+
+  /* Loop animation for autonomous */
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .loop-ring {
+    transform-origin: 110px 80px;
+    animation: spin 8s linear infinite;
+  }
+
+  .panel-number {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #783FF3;
+    margin-bottom: 4px;
+  }
+  .level-panel.highlight .panel-number { color: rgba(255,255,255,0.6); }
+  .level-panel.future .panel-number { color: #78716c; }
+
+  .panel-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  /* Visual area */
+  .panel-visual {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    position: relative;
+  }
+
+  .panel-visual svg {
+    width: 100%;
+    height: 100%;
+    max-height: 320px;
+  }
+
+  /* Multiplier badge */
+  .multiplier {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #FA7E00;
+    position: absolute;
+    bottom: 52px;
+    right: 16px;
+    opacity: 0.9;
+  }
+  .level-panel.highlight .multiplier { color: #FA7E00; }
+  .level-panel.future .multiplier { color: #78716c; }
+
+  /* Bottom description */
+  .panel-desc {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #44403c;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .level-panel.highlight .panel-desc {
+    color: rgba(255,255,255,0.8);
+    border-top-color: rgba(255,255,255,0.15);
+  }
+  .level-panel.future .panel-desc {
+    color: #78716c;
+    border-top-color: rgba(0,0,0,0.08);
+  }
+
+  /* Stamp */
+  .stamp {
+    position: absolute;
+    bottom: 16px;
+    right: 24px;
+    opacity: 0.15;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #111;
+    text-align: right;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Person icon colors */
+  .person-fill { fill: #111111; }
+  .level-panel.highlight .person-fill { fill: #ffffff; }
+  .level-panel.future .person-fill { fill: #78716c; }
+
+  .ai-dot { fill: #783FF3; }
+  .level-panel.highlight .ai-dot { fill: rgba(255,255,255,0.9); }
+  .level-panel.future .ai-dot { fill: #78716c; }
+
+  .ai-dot-sub { fill: #783FF3; opacity: 0.5; }
+  .level-panel.highlight .ai-dot-sub { fill: rgba(255,255,255,0.5); }
+  .level-panel.future .ai-dot-sub { fill: #78716c; opacity: 0.4; }
+
+  .conn-line { stroke: #783FF3; stroke-width: 1.5; opacity: 0.3; }
+  .level-panel.highlight .conn-line { stroke: rgba(255,255,255,0.4); }
+  .level-panel.future .conn-line { stroke: #78716c; opacity: 0.2; }
+
+  .conn-line-strong { stroke: #783FF3; stroke-width: 2; opacity: 0.6; }
+  .level-panel.highlight .conn-line-strong { stroke: rgba(255,255,255,0.7); }
+
+  .task-box { fill: #FBFAF4; stroke: #783FF3; stroke-width: 1; opacity: 0.6; }
+  .level-panel.highlight .task-box { fill: rgba(255,255,255,0.15); stroke: rgba(255,255,255,0.4); }
+
+  .arrow-head { fill: #783FF3; opacity: 0.5; }
+  .level-panel.highlight .arrow-head { fill: rgba(255,255,255,0.6); }
+
+  .label-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    fill: #78716c;
+    text-anchor: middle;
+  }
+  .level-panel.highlight .label-text { fill: rgba(255,255,255,0.6); }
+  .level-panel.future .label-text { fill: #78716c; opacity: 0.6; }
+
+  /* Halo text: readable over lines and shapes */
+  .label-halo {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    fill: #78716c;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: #EAEBE4;
+    stroke-width: 6px;
+    stroke-linejoin: round;
+  }
+  .level-panel.highlight .label-halo {
+    fill: rgba(255,255,255,0.75);
+    stroke: #783FF3;
+    stroke-width: 7px;
+  }
+  .level-panel.future .label-halo {
+    fill: #78716c;
+    stroke: #FBFAF4;
+    stroke-width: 6px;
+  }
+
+  .action-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    fill: #FA7E00;
+    text-anchor: middle;
+    font-weight: 500;
+  }
+  .level-panel.highlight .action-label { fill: #FA7E00; }
+  .level-panel.future .action-label { fill: #78716c; }
+
+  @media print {
+    body { width: 100%; height: 100%; }
+    .slide { max-width: none; max-height: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <h1 class="slide-title"><span>V</span>álj menedzserré</h1>
+  <p class="slide-subtitle">Ugyanaz az ember, ugyanannyi idő. A különbség: hányszor sokszorozódik a kapacitása.</p>
+
+  <div class="levels-grid">
+
+    <!-- LEVEL 1: Point interaction -->
+    <div class="level-panel">
+      <div class="panel-header">
+        <div class="panel-number">1. szint</div>
+        <div class="panel-name">Keresés</div>
+      </div>
+      <div class="panel-visual">
+        <svg viewBox="0 0 220 300">
+          <!-- Person -->
+          <circle cx="70" cy="60" r="14" class="person-fill"/>
+          <text x="70" y="88" class="label-text">Én</text>
+
+          <!-- Single arrow to AI -->
+          <line x1="90" y1="60" x2="132" y2="60" class="conn-line-strong"/>
+          <polygon points="132,56 140,60 132,64" class="arrow-head"/>
+
+          <!-- AI dot -->
+          <circle cx="152" cy="60" r="10" class="ai-dot"/>
+          <text x="152" y="84" class="label-text">AI</text>
+
+          <!-- Single answer back -->
+          <line x1="147" y1="72" x2="95" y2="115" class="conn-line" stroke-dasharray="4 3"/>
+
+          <!-- Small answer box -->
+          <rect x="58" y="120" width="50" height="24" rx="4" class="task-box"/>
+          <text x="83" y="136" class="label-text" font-size="8">válasz</text>
+
+          <!-- Action label -->
+          <text x="110" y="178" class="action-label">1 kérdés → 1 válasz</text>
+        </svg>
+        <div class="multiplier">1x</div>
+      </div>
+      <div class="panel-desc">Pont, mint a Google. Kérdezek, kapok egy választ, kész. Ha új kérdés van, újra kérdezek.</div>
+    </div>
+
+    <!-- LEVEL 2: Back and forth on ONE task -->
+    <div class="level-panel">
+      <div class="panel-header">
+        <div class="panel-number">2. szint</div>
+        <div class="panel-name">Gondolkodótárs</div>
+      </div>
+      <div class="panel-visual">
+        <svg viewBox="0 0 220 300">
+          <!-- Connection lines FIRST -->
+          <line x1="70" y1="42" x2="153" y2="42" class="conn-line-strong"/>
+          <polygon points="153,38 161,42 153,46" class="arrow-head"/>
+          <line x1="153" y1="58" x2="70" y2="58" class="conn-line-strong"/>
+          <polygon points="70,54 62,58 70,62" class="arrow-head"/>
+          <line x1="50" y1="66" x2="75" y2="108" class="conn-line"/>
+          <line x1="170" y1="62" x2="145" y2="108" class="conn-line"/>
+
+          <!-- Person -->
+          <circle cx="50" cy="50" r="14" class="person-fill"/>
+          <text x="50" y="80" class="label-halo">Én</text>
+
+          <!-- AI -->
+          <circle cx="170" cy="50" r="10" class="ai-dot"/>
+          <text x="170" y="76" class="label-halo">AI</text>
+
+          <!-- The ONE task I'm working on -->
+          <rect x="60" y="108" width="100" height="32" rx="6" class="task-box" stroke-width="1.5"/>
+          <text x="110" y="128" class="label-text">az én 1 feladatom</text>
+
+          <!-- Action label -->
+          <text x="110" y="175" class="action-label">oda-vissza, de 1 feladat</text>
+        </svg>
+        <div class="multiplier">1.5x</div>
+      </div>
+      <div class="panel-desc">Ötletelek, szerkesztek, copy-paste. De alapvetően egy feladaton dolgozom, amibe az AI besegít.</div>
+    </div>
+
+    <!-- LEVEL 3: Delegation + multiplication -->
+    <div class="level-panel highlight">
+      <div class="panel-header">
+        <div class="panel-number">3. szint</div>
+        <div class="panel-name">Delegálás</div>
+        <div class="panel-role">Én irányítok, az AI dolgozik</div>
+      </div>
+      <div class="panel-visual">
+        <svg viewBox="0 0 220 240">
+          <!-- Connection lines FIRST (below everything) -->
+          <line x1="100" y1="24" x2="44" y2="72" class="conn-line-strong"/>
+          <line x1="110" y1="28" x2="110" y2="64" class="conn-line-strong"/>
+          <line x1="120" y1="24" x2="176" y2="72" class="conn-line-strong"/>
+
+          <!-- Sub-agent lines -->
+          <line x1="32" y1="88" x2="18" y2="118" class="conn-line"/>
+          <line x1="38" y1="88" x2="46" y2="122" class="conn-line"/>
+          <line x1="104" y1="83" x2="90" y2="115" class="conn-line"/>
+          <line x1="116" y1="83" x2="130" y2="115" class="conn-line"/>
+          <line x1="180" y1="88" x2="174" y2="118" class="conn-line"/>
+          <line x1="186" y1="88" x2="200" y2="115" class="conn-line"/>
+
+          <!-- Person at top center -->
+          <circle cx="110" cy="14" r="12" class="person-fill"/>
+
+          <!-- Agent row -->
+          <circle cx="36" cy="80" r="9" class="ai-dot"/>
+          <circle cx="110" cy="75" r="9" class="ai-dot"/>
+          <circle cx="184" cy="80" r="9" class="ai-dot"/>
+
+          <!-- Sub-agent row -->
+          <circle cx="16" cy="125" r="5" class="ai-dot-sub"/>
+          <circle cx="48" cy="128" r="5" class="ai-dot-sub"/>
+          <circle cx="88" cy="122" r="5" class="ai-dot-sub"/>
+          <circle cx="132" cy="122" r="5" class="ai-dot-sub"/>
+          <circle cx="172" cy="125" r="5" class="ai-dot-sub"/>
+          <circle cx="204" cy="122" r="5" class="ai-dot-sub"/>
+
+          <!-- Task boxes -->
+          <rect x="2" y="145" width="60" height="18" rx="4" class="task-box"/>
+          <text x="32" y="157" class="label-text" font-size="7">feladat 1</text>
+
+          <rect x="80" y="143" width="60" height="18" rx="4" class="task-box"/>
+          <text x="110" y="155" class="label-text" font-size="7">feladat 2</text>
+
+          <rect x="158" y="145" width="60" height="18" rx="4" class="task-box"/>
+          <text x="188" y="157" class="label-text" font-size="7">feladat 3</text>
+
+          <!-- Action label -->
+          <text x="110" y="188" class="action-label">párhuzamosan, egyszerre</text>
+        </svg>
+        <div class="multiplier">10x</div>
+      </div>
+      <div class="panel-desc">Nem én csinálom, hanem csináltatom. Feladatokat delegálok, al-agenteket indítok. Sokszorozódom.</div>
+    </div>
+
+    <!-- LEVEL 4: Autonomous system -->
+    <div class="level-panel future">
+      <div class="panel-header">
+        <div class="panel-number">4. szint</div>
+        <div class="panel-name">Autonóm</div>
+        <div class="panel-role">Csak kiértékelek, a rendszer fut</div>
+      </div>
+      <div class="panel-visual">
+        <svg viewBox="0 0 220 240">
+          <defs>
+            <!-- Arrow marker for loop -->
+            <marker id="loopArrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#78716c" opacity="0.5"/>
+            </marker>
+          </defs>
+
+          <!-- All connection lines FIRST -->
+          <line x1="110" y1="22" x2="110" y2="52" class="conn-line" stroke-dasharray="3 4" opacity="0.2"/>
+          <line x1="100" y1="92" x2="42" y2="124" class="conn-line-strong"/>
+          <line x1="106" y1="94" x2="78" y2="130" class="conn-line-strong"/>
+          <line x1="116" y1="94" x2="142" y2="130" class="conn-line-strong"/>
+          <line x1="122" y1="92" x2="178" y2="124" class="conn-line-strong"/>
+
+          <!-- Sub-agent lines -->
+          <line x1="33" y1="138" x2="18" y2="162" class="conn-line"/>
+          <line x1="39" y1="138" x2="46" y2="165" class="conn-line"/>
+          <line x1="74" y1="144" x2="62" y2="168" class="conn-line"/>
+          <line x1="82" y1="144" x2="92" y2="168" class="conn-line"/>
+          <line x1="140" y1="144" x2="128" y2="168" class="conn-line"/>
+          <line x1="148" y1="144" x2="158" y2="168" class="conn-line"/>
+          <line x1="181" y1="138" x2="174" y2="162" class="conn-line"/>
+          <line x1="187" y1="138" x2="200" y2="162" class="conn-line"/>
+
+          <!-- Person far above, faded -->
+          <circle cx="110" cy="12" r="8" class="person-fill" opacity="0.3"/>
+
+          <!-- Spinning loop ring around central AI -->
+          <g class="loop-ring">
+            <circle cx="110" cy="80" r="28" fill="none" stroke="#78716c" stroke-width="1.5" stroke-dasharray="12 6" opacity="0.35"/>
+          </g>
+          <!-- Static loop arrow on the ring -->
+          <path d="M 138,78 A 28,28 0 1,1 112,52" fill="none" stroke="#78716c" stroke-width="1.5" opacity="0.4" marker-end="url(#loopArrow)"/>
+
+          <!-- Central AI "brain" -->
+          <circle cx="110" cy="80" r="14" class="ai-dot"/>
+
+          <!-- Spawned agents -->
+          <circle cx="36" cy="130" r="7" class="ai-dot"/>
+          <circle cx="76" cy="138" r="7" class="ai-dot"/>
+          <circle cx="144" cy="138" r="7" class="ai-dot"/>
+          <circle cx="184" cy="130" r="7" class="ai-dot"/>
+
+          <!-- Sub-sub agents -->
+          <circle cx="16" cy="168" r="4" class="ai-dot-sub"/>
+          <circle cx="46" cy="170" r="4" class="ai-dot-sub"/>
+          <circle cx="60" cy="174" r="4" class="ai-dot-sub"/>
+          <circle cx="92" cy="174" r="4" class="ai-dot-sub"/>
+          <circle cx="128" cy="174" r="4" class="ai-dot-sub"/>
+          <circle cx="160" cy="174" r="4" class="ai-dot-sub"/>
+          <circle cx="174" cy="168" r="4" class="ai-dot-sub"/>
+          <circle cx="204" cy="168" r="4" class="ai-dot-sub"/>
+
+          <!-- Action label -->
+          <text x="110" y="208" class="action-label">24/7, soha nem áll meg</text>
+        </svg>
+        <div class="multiplier">100x?</div>
+      </div>
+      <div class="panel-desc">Célokat adok, a rendszer maga szervezi a munkát. Új kollégákat és kompetenciákat épít magának.</div>
+    </div>
+
+  </div>
+
+  <div class="stamp">
+    1337<br/>The Intelligence Company
+  </div>
+
+</div>
+
+</body>
+</html>

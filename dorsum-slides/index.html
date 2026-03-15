@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Coding Agents — 1337</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #FBFAF4;
+            overflow: hidden;
+            font-family: 'DM Mono', monospace;
+            transition: background 0.4s ease;
+        }
+
+        /* ── Iframe slides ── */
+        .deck {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .deck iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease-out;
+        }
+
+        .deck iframe.active {
+            opacity: 1;
+        }
+
+        /* ── Navigation overlay ── */
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            display: flex;
+            cursor: pointer;
+        }
+
+        .nav-left {
+            width: 33%;
+            cursor: w-resize;
+        }
+
+        .nav-right {
+            width: 67%;
+            cursor: e-resize;
+        }
+
+        /* ── 1337 Stamp overlay (consistent on every slide) ── */
+        .stamp-overlay {
+            position: fixed;
+            bottom: 42px;
+            right: 52px;
+            width: 90px;
+            height: 90px;
+            z-index: 800;
+            pointer-events: none;
+            transition: filter 0.35s ease, opacity 0.35s ease;
+        }
+
+        .stamp-overlay img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0.5;
+        }
+
+        .stamp-overlay.dark img {
+            filter: brightness(0) invert(1);
+            opacity: 0.3;
+        }
+
+        /* ── Counter + dots ── */
+        .counter {
+            position: fixed;
+            bottom: 24px;
+            left: 36px;
+            z-index: 1000;
+            pointer-events: none;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: color 0.35s ease;
+        }
+
+        .counter-text {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        .counter.light { color: rgba(68, 64, 60, 0.5); }
+        .counter.dark { color: rgba(168, 162, 158, 0.45); }
+
+        .dots {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .counter.light .dot { background: rgba(68, 64, 60, 0.12); }
+        .counter.light .dot.active { background: rgba(68, 64, 60, 0.5); width: 14px; border-radius: 3px; }
+
+        .counter.dark .dot { background: rgba(168, 162, 158, 0.12); }
+        .counter.dark .dot.active { background: rgba(168, 162, 158, 0.45); width: 14px; border-radius: 3px; }
+
+        /* ── Progress bar ── */
+        .progress {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: #783FF3;
+            z-index: 1000;
+            transition: width 0.4s ease-out;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="counter light" id="counter">
+    <span class="counter-text" id="counterText">01 / 12</span>
+    <div class="dots" id="dots"></div>
+</div>
+
+<div class="stamp-overlay" id="stamp">
+    <img src="assets/1337 stamp.png" alt="1337">
+</div>
+
+<div class="nav-overlay" id="nav" tabindex="0">
+    <div class="nav-left" id="navLeft"></div>
+    <div class="nav-right" id="navRight"></div>
+</div>
+
+<div class="deck" id="deck">
+    <!-- 1. HOOK: December shift -->
+    <iframe src="december-shift.html" class="active" data-theme="light"></iframe>
+
+    <!-- 2. CONTEXT: AI Timeline -->
+    <iframe src="ai-evolution-timeline.html" data-theme="dark"></iframe>
+
+    <!-- 3–8. EXPONENTIAL: Tim Urban deck -->
+    <iframe src="exponential-slide-1.html" data-theme="light"></iframe>
+    <iframe src="exponential-slide-2.html" data-theme="light"></iframe>
+    <iframe src="exponential-slide-3.html" data-theme="dark"></iframe>
+    <iframe src="exponential-slide-4.html" data-theme="dark"></iframe>
+    <iframe src="exponential-slide-5.html" data-theme="light"></iframe>
+    <iframe src="exponential-slide-6.html" data-theme="light"></iframe>
+
+    <!-- 9. WHAT: Coding Agents -->
+    <iframe src="coding-agents-slide.html" data-theme="light"></iframe>
+
+    <!-- 10–12. FRAMEWORK: Maturity Model -->
+    <iframe src="ai-erettsegi-modell.html" data-theme="light"></iframe>
+    <iframe src="ai-erettsegi-modell-2.html" data-theme="light"></iframe>
+    <iframe src="ai-erettsegi-modell-3.html" data-theme="light"></iframe>
+</div>
+
+<script>
+(function() {
+    var frames = document.querySelectorAll('#deck iframe');
+    var counter = document.getElementById('counter');
+    var counterText = document.getElementById('counterText');
+    var progress = document.getElementById('progress');
+    var stamp = document.getElementById('stamp');
+    var dotsEl = document.getElementById('dots');
+    var nav = document.getElementById('nav');
+    var total = frames.length;
+    var cur = 0;
+
+    // Build dot indicators
+    for (var i = 0; i < total; i++) {
+        var d = document.createElement('div');
+        d.className = 'dot' + (i === 0 ? ' active' : '');
+        dotsEl.appendChild(d);
+    }
+    var dots = dotsEl.querySelectorAll('.dot');
+
+    // CSS to inject into each iframe: hide internal stamps, logos, footers
+    var hideCSS = '.stamp { opacity: 0 !important; } .logo-mark { opacity: 0 !important; } .footer { opacity: 0 !important; } img[src*="stamp"] { opacity: 0 !important; }';
+
+    function cleanIframe(iframe) {
+        try {
+            var doc = iframe.contentDocument || iframe.contentWindow.document;
+            if (doc && doc.head) {
+                var s = doc.createElement('style');
+                s.textContent = hideCSS;
+                doc.head.appendChild(s);
+            }
+        } catch(e) { /* file:// CORS — stamp overlay still works */ }
+    }
+
+    // Clean each iframe on load
+    for (var i = 0; i < total; i++) {
+        (function(f) {
+            f.addEventListener('load', function() { cleanIframe(f); });
+        })(frames[i]);
+    }
+
+    // Background colors per theme
+    var bgs = { light: '#FBFAF4', dark: '#1c1917' };
+
+    function go(idx) {
+        if (idx < 0 || idx >= total) return;
+
+        frames[cur].classList.remove('active');
+        cur = idx;
+        frames[cur].classList.add('active');
+
+        // Theme
+        var theme = frames[cur].dataset.theme || 'light';
+
+        // Body bg matches slide
+        document.body.style.background = bgs[theme] || bgs.light;
+
+        // Counter text
+        var n = String(cur + 1);
+        if (n.length < 2) n = '0' + n;
+        counterText.textContent = n + ' / ' + total;
+
+        // Counter theme
+        counter.className = 'counter ' + theme;
+
+        // Stamp theme
+        stamp.className = 'stamp-overlay' + (theme === 'dark' ? ' dark' : '');
+
+        // Dots
+        for (var i = 0; i < total; i++) {
+            dots[i].className = 'dot' + (i === cur ? ' active' : '');
+        }
+
+        // Progress
+        progress.style.width = ((cur + 1) / total * 100) + '%';
+    }
+
+    // Keyboard
+    function onKey(e) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault(); go(cur + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault(); go(cur - 1);
+        } else if (e.key === 'Home') {
+            e.preventDefault(); go(0);
+        } else if (e.key === 'End') {
+            e.preventDefault(); go(total - 1);
+        }
+    }
+
+    nav.addEventListener('keydown', onKey);
+    document.addEventListener('keydown', onKey);
+
+    // Click zones
+    document.getElementById('navLeft').addEventListener('click', function() { go(cur - 1); });
+    document.getElementById('navRight').addEventListener('click', function() { go(cur + 1); });
+
+    // Touch swipe
+    var tx = 0;
+    nav.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; }, { passive: true });
+    nav.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 50) { dx < 0 ? go(cur + 1) : go(cur - 1); }
+    }, { passive: true });
+
+    // Focus overlay for keyboard
+    nav.focus();
+    go(0);
+})();
+</script>
+
+</body>
+</html>

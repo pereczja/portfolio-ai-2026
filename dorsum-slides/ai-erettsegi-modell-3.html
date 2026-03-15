@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Érettségi Modell – Építőkockák | 1337</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #FBFAF4;
+    color: #111111;
+    font-family: 'DM Mono', 'Consolas', monospace;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    max-width: 1440px;
+    max-height: 900px;
+    padding: 48px 72px 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .slide-title span:first-child { font-style: italic; }
+
+  .slide-subtitle {
+    font-size: 13px;
+    color: #78716c;
+    margin-bottom: 40px;
+    letter-spacing: 0.2px;
+  }
+
+  /* Stack container: rows from bottom to top */
+  .stack {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  /* Each level row */
+  .row {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  /* Level label on left */
+  .row-label {
+    width: 100px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding-right: 16px;
+  }
+
+  .row-number {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #78716c;
+  }
+
+  .row-outcome {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    text-align: right;
+    margin-top: 2px;
+    line-height: 1.2;
+  }
+
+  .row.tier-3 .row-outcome { color: #783FF3; }
+  .row.tier-4 .row-outcome { color: #78716c; }
+
+  /* Block cards */
+  .blocks {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+  }
+
+  .block {
+    flex: 1;
+    padding: 20px 20px 18px;
+    border-radius: 12px;
+    min-height: 0;
+  }
+
+  .block-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .block-desc {
+    font-size: 11px;
+    line-height: 1.5;
+    opacity: 0.75;
+  }
+
+  /* Tier colors */
+  .block.t1 {
+    background: #EAEBE4;
+    color: #111;
+  }
+
+  .block.t2 {
+    background: #d4d0c8;
+    color: #111;
+  }
+
+  .block.t3 {
+    background: #783FF3;
+    color: white;
+  }
+
+  .block.t4 {
+    background: transparent;
+    border: 2px dashed #78716c;
+    color: #44403c;
+  }
+
+  /* Arrow between rows */
+  .row-arrow {
+    width: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 45px;
+  }
+
+  .arrow-up {
+    width: 2px;
+    height: 20px;
+    background: #EAEBE4;
+    position: relative;
+  }
+
+  /* Stamp */
+  .stamp {
+    position: absolute;
+    bottom: 16px;
+    right: 28px;
+    opacity: 0.15;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #111;
+    text-align: right;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  @media print {
+    body { width: 100%; height: 100%; }
+    .slide { max-width: none; max-height: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <h1 class="slide-title"><span>M</span>i kell ehhez?</h1>
+  <p class="slide-subtitle">Minden szint új képességeket követel. Nem elég jól promptolni. Rendszert kell építeni.</p>
+
+  <div class="stack">
+
+    <!-- Level 4: Autonomous (top) -->
+    <div class="row tier-4">
+      <div class="row-label">
+        <div class="row-number">4. szint</div>
+        <div class="row-outcome">Szervezetet<br/>építek</div>
+      </div>
+      <div class="blocks">
+        <div class="block t4">
+          <div class="block-title">Célrendszer</div>
+          <div class="block-desc">Nem feladatot adok, hanem célt. Az AI maga bontja le részfeladatokra, maga priorizál.</div>
+        </div>
+        <div class="block t4">
+          <div class="block-title">Kiértékelés</div>
+          <div class="block-desc">Folyamatos monitoring. Tudom mérni, hogy az AI jól dolgozik-e. Beavatkozom, ha kell.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level 3: Agentic -->
+    <div class="row tier-3">
+      <div class="row-label">
+        <div class="row-number">3. szint</div>
+        <div class="row-outcome">Digitális<br/>kollégákat építek</div>
+      </div>
+      <div class="blocks">
+        <div class="block t3">
+          <div class="block-title">Skillek definiálása</div>
+          <div class="block-desc">Leírom a feladatot, a szabályokat, a minőségi elvárásokat. Digitális kollégát építek.</div>
+        </div>
+        <div class="block t3">
+          <div class="block-title">Integráció</div>
+          <div class="block-desc">Az AI hozzáfér a rendszereinkhez. Nem copy-paste, hanem élő kapcsolat.</div>
+        </div>
+        <div class="block t3">
+          <div class="block-title">Menedzsment</div>
+          <div class="block-desc">Briefelek, visszajelzést adok, szintetizálok. Karmesterkedem.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level 2: Thought partner -->
+    <div class="row tier-2">
+      <div class="row-label">
+        <div class="row-number">2. szint</div>
+        <div class="row-outcome">Együtt<br/>gondolkodunk</div>
+      </div>
+      <div class="blocks">
+        <div class="block t2">
+          <div class="block-title">Kontextus adás</div>
+          <div class="block-desc">Megadom a hátteret, a célt, a korlátokat. Minél jobb a kontextus, annál jobb az output.</div>
+        </div>
+        <div class="block t2">
+          <div class="block-title">Iteráció</div>
+          <div class="block-desc">Oda-vissza dolgozom az AI-jal. Finomítok, javítok, építek az outputra.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level 1: Search (bottom) -->
+    <div class="row tier-1">
+      <div class="row-label">
+        <div class="row-number">1. szint</div>
+        <div class="row-outcome">Kérdezek</div>
+      </div>
+      <div class="blocks">
+        <div class="block t1">
+          <div class="block-title">Kérdezés</div>
+          <div class="block-desc">Tudom, mit kérdezzek. Értem, mit kapok vissza. De ennyi.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stamp">
+    1337<br/>The Intelligence Company
+  </div>
+
+</div>
+
+</body>
+</html>

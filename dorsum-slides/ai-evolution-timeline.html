@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Az AI Evolúciója — 1337</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'PP Editorial Old';
+            src: local('PPEditorialNew-Ultralight');
+            font-weight: 200;
+        }
+
+        :root {
+            --bg: #1c1917;
+            --purple: #783FF3;
+            --orange: #FA7E00;
+            --text: #f5f5f0;
+            --muted: #a8a29e;
+            --dim: #6b6560;
+            --line: #3a3532;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'DM Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 48px 64px 36px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'PP Editorial Old', 'Playfair Display', Georgia, serif;
+            font-weight: 500;
+        }
+
+        /* ── Scanlines ── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.012) 2px,
+                rgba(255,255,255,0.012) 4px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header h1 span {
+            color: var(--purple);
+        }
+
+        .header .tag {
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            border: 1px solid var(--line);
+            padding: 4px 12px;
+            border-radius: 2px;
+        }
+
+        /* ── Pre-history bar ── */
+        .prehistory {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 20px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            margin-bottom: 40px;
+            flex-shrink: 0;
+        }
+
+        .prehistory .label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--dim);
+            white-space: nowrap;
+        }
+
+        .prehistory .divider {
+            width: 1px;
+            height: 20px;
+            background: var(--line);
+            flex-shrink: 0;
+        }
+
+        .prehistory .era-pill {
+            font-size: 0.78rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prehistory .era-pill .dot-sm {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--dim);
+            flex-shrink: 0;
+        }
+
+        .prehistory .era-pill strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            flex: 1;
+            display: flex;
+            gap: 0;
+            position: relative;
+            min-height: 0;
+        }
+
+        /* Horizontal line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 24px;
+            right: 24px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--purple) 0%, var(--purple) 55%, var(--orange) 80%, var(--orange) 100%);
+            z-index: 1;
+        }
+
+        .era {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        .era + .era {
+            border-left: 1px solid var(--line);
+        }
+
+        /* ── Dot ── */
+        .dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--purple);
+            border: 3px solid var(--bg);
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        .era.now .dot {
+            background: var(--orange);
+            width: 26px;
+            height: 26px;
+            box-shadow: 0 0 28px rgba(250, 126, 0, 0.5);
+            position: relative;
+        }
+
+        .era.now .dot::after {
+            content: '';
+            position: absolute;
+            top: -7px; left: -7px; right: -7px; bottom: -7px;
+            border-radius: 50%;
+            border: 1px solid rgba(250, 126, 0, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.5); }
+        }
+
+        /* ── Year ── */
+        .year {
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+            color: var(--purple);
+            margin-top: 24px;
+            margin-bottom: 32px;
+            text-align: center;
+            flex-shrink: 0;
+            font-weight: 500;
+        }
+
+        .era.now .year {
+            color: var(--orange);
+        }
+
+        /* ── Content ── */
+        .era-content {
+            text-align: left;
+            width: 100%;
+            padding: 0 6px;
+        }
+
+        .era-content h3 {
+            font-size: 1.25rem;
+            line-height: 1.25;
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        .era-content .insight {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .era-content .insight strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .era-content .example {
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: var(--dim);
+            border-left: 2px solid var(--line);
+            padding-left: 12px;
+        }
+
+        .era.now .era-content .example {
+            border-left-color: rgba(250, 126, 0, 0.4);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 28px;
+            flex-shrink: 0;
+        }
+
+        .footer .credit {
+            font-size: 0.65rem;
+            color: #4a4540;
+            letter-spacing: 0.08em;
+        }
+
+        .footer .stamp {
+            width: 48px;
+            opacity: 0.3;
+            filter: brightness(0) invert(1);
+        }
+
+        /* ── Animations ── */
+        .prehistory {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeUp 0.4s ease-out 0.05s forwards;
+        }
+
+        .era {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: fadeUp 0.5s ease-out forwards;
+        }
+
+        .era:nth-child(1) { animation-delay: 0.15s; }
+        .era:nth-child(2) { animation-delay: 0.25s; }
+        .era:nth-child(3) { animation-delay: 0.35s; }
+        .era:nth-child(4) { animation-delay: 0.45s; }
+        .era:nth-child(5) { animation-delay: 0.55s; }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Az AI <span>Evolúciója</span></h1>
+        <span class="tag">Az LLM-ek kora</span>
+    </div>
+
+    <!-- Pre-LLM eras compressed into one bar -->
+    <div class="prehistory">
+        <span class="label">Előzmények</span>
+        <div class="divider"></div>
+        <span class="era-pill"><span class="dot-sm"></span> <strong>Szakértői rendszerek</strong> 1970s–80s</span>
+        <div class="divider"></div>
+        <span class="era-pill"><span class="dot-sm"></span> <strong>Gépi tanulás</strong> 1990s–2000s</span>
+        <div class="divider"></div>
+        <span class="era-pill"><span class="dot-sm"></span> <strong>Mélytanulás</strong> 2012+</span>
+    </div>
+
+    <div class="timeline">
+
+        <div class="era">
+            <div class="dot"></div>
+            <div class="year">2017–2023</div>
+            <div class="era-content">
+                <h3>Transformer &amp; LLM-ek</h3>
+                <p class="insight">A Google <strong>"Attention Is All You Need"</strong> cikke (2017) tette lehetővé a nagy nyelvi modellek létezését. A ChatGPT (2022 nov.) volt a pillanat, amikor a világ felfigyelt.</p>
+                <p class="example">GPT, BERT, DALL-E, AlphaFold, ChatGPT. Egy architektúra, ami mindent átírt.</p>
+            </div>
+        </div>
+
+        <div class="era">
+            <div class="dot"></div>
+            <div class="year">2024 szept.</div>
+            <div class="era-content">
+                <h3>Reasoning modellek</h3>
+                <p class="insight">A modell <strong>gondolkodik válaszadás előtt.</strong> Chain-of-thought érvelés. Radikálisan jobb matek, kódolás, összetett problémamegoldás.</p>
+                <p class="example">OpenAI o1 (szept.), DeepSeek R1 (jan. 2025, nyílt forrás, töredék költség, azonos szint).</p>
+            </div>
+        </div>
+
+        <div class="era">
+            <div class="dot"></div>
+            <div class="year">2024 vége / 2025 eleje</div>
+            <div class="era-content">
+                <h3>Az agentek megjelenése</h3>
+                <p class="insight">Az AI elkezd <strong>önállóan cselekedni,</strong> nem csak válaszolni. Még kezdetleges: a kódoló agentek kiforratlanok. A fő non-coding áttörés a <strong>Deep Research</strong> lett.</p>
+                <p class="example">Perplexity, Gemini Deep Research, ChatGPT Pro. Az AI kutat, összegez, szintetizál helyetted.</p>
+            </div>
+        </div>
+
+        <div class="era">
+            <div class="dot"></div>
+            <div class="year">2025 február</div>
+            <div class="era-content">
+                <h3>Kódoló agentek forradalma</h3>
+                <p class="insight"><strong>Terminal-first agentek.</strong> Nem IDE plugin, nem autocomplete. Az AI önállóan navigálja a kódbázist, fájlokat ír, tesztel, commitol. A paradigmaváltás: "AI segít kódolni" helyett "AI kódol neked."</p>
+                <p class="example">Claude Code, Cursor Agent mode, Codex CLI. A Copilot felhasználóknál az írt kód ~46%-a AI-generált.</p>
+            </div>
+        </div>
+
+        <div class="era now">
+            <div class="dot"></div>
+            <div class="year">2025–26</div>
+            <div class="era-content">
+                <h3>Most tartunk itt</h3>
+                <p class="insight">Kódoló agentek, kutatási agentek, workflow agentek. A kérdés már nem az, mire képes az AI. Hanem az, <strong>mire vagy képes vele te.</strong></p>
+                <p class="example">A következő 2 év nagyobb ugrás lesz, mint az előző 10.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <span class="credit">1337 &mdash; THE INTELLIGENCE COMPANY</span>
+        <img src="assets/1337 stamp.png" alt="" class="stamp" onerror="this.style.display='none'">
+    </div>
+
+</body>
+</html>

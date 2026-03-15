@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Érettségi Modell | 1337</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #FBFAF4;
+    color: #111111;
+    font-family: 'DM Mono', 'Consolas', monospace;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    max-width: 1440px;
+    max-height: 900px;
+    padding: 56px 72px 48px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .slide-title span:first-child {
+    font-style: italic;
+  }
+
+  .slide-subtitle {
+    font-size: 13px;
+    color: #78716c;
+    margin-bottom: 32px;
+    letter-spacing: 0.3px;
+  }
+
+  .chart-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-container {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+  }
+
+  /* The SVG chart */
+  .chart-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Level cards positioned above the chart */
+  .levels-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .level-card {
+    flex: 1;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #EAEBE4;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .level-card.active {
+    background: #783FF3;
+    color: white;
+  }
+
+  .level-card.future {
+    background: transparent;
+    border: 2px dashed #78716c;
+    opacity: 0.7;
+  }
+
+  .level-number {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #783FF3;
+    margin-bottom: 6px;
+  }
+
+  .level-card.active .level-number {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .level-card.future .level-number {
+    color: #78716c;
+  }
+
+  .level-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .level-desc {
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: #44403c;
+  }
+
+  .level-card.active .level-desc {
+    color: rgba(255,255,255,0.85);
+  }
+
+  .level-card.future .level-desc {
+    color: #78716c;
+  }
+
+  /* Annotation badges */
+  .annotation {
+    position: absolute;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    z-index: 10;
+    letter-spacing: 0.2px;
+  }
+
+  .annotation.most-people {
+    background: #EAEBE4;
+    color: #44403c;
+    bottom: 48%;
+    left: 8%;
+    transform: translateX(0);
+  }
+
+  .annotation.we-here {
+    background: #FA7E00;
+    color: white;
+    bottom: 62%;
+    right: 18%;
+  }
+
+  .annotation.scary {
+    background: transparent;
+    border: 1.5px dashed #78716c;
+    color: #78716c;
+    top: 8%;
+    right: 2%;
+    font-style: italic;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  /* Axis labels */
+  .axis-label {
+    position: absolute;
+    font-size: 12px;
+    color: #78716c;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .axis-label.x-axis {
+    bottom: 6px;
+    right: 0;
+  }
+
+  .axis-label.y-axis {
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg) translateX(-100%);
+    transform-origin: top left;
+  }
+
+  /* Arrow markers on axes */
+  .axis-arrow {
+    position: absolute;
+    color: #78716c;
+  }
+
+  /* Stamp */
+  .stamp {
+    position: absolute;
+    bottom: 20px;
+    right: 28px;
+    opacity: 0.15;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #111;
+    text-align: right;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Vertical level dividers in chart */
+  .level-divider {
+    stroke: #EAEBE4;
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+
+  /* The exponential curve gradient */
+  .curve-gradient-stop-1 { stop-color: #783FF3; stop-opacity: 0.03; }
+  .curve-gradient-stop-2 { stop-color: #783FF3; stop-opacity: 0.12; }
+  .curve-gradient-stop-3 { stop-color: #783FF3; stop-opacity: 0.25; }
+
+  .curve-line {
+    fill: none;
+    stroke: #783FF3;
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .curve-area {
+    fill: url(#curveGradient);
+  }
+
+  /* Dashed future zone */
+  .future-zone {
+    fill: none;
+    stroke: #783FF3;
+    stroke-width: 3;
+    stroke-dasharray: 8 6;
+    stroke-linecap: round;
+    opacity: 0.5;
+  }
+
+  .future-area {
+    fill: url(#curveGradient);
+    opacity: 0.4;
+  }
+
+  /* Dot on curve for "we are here" */
+  .here-dot {
+    fill: #FA7E00;
+    filter: drop-shadow(0 0 6px rgba(250, 126, 0, 0.4));
+  }
+
+  .connector-line {
+    stroke: #FA7E00;
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+    opacity: 0.6;
+  }
+
+  .connector-line-gray {
+    stroke: #78716c;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    opacity: 0.4;
+  }
+
+  /* Level indicators along X axis */
+  .level-tick-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    fill: #78716c;
+    text-anchor: middle;
+  }
+
+  @media print {
+    body { width: 100%; height: 100%; }
+    .slide { max-width: none; max-height: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="slide">
+
+  <!-- Title -->
+  <h1 class="slide-title"><span>A</span> modell okosabb, mint ahogy használod</h1>
+  <p class="slide-subtitle">Hogyan használjuk az AI-t? Nem az eszköz számít, hanem a szint.</p>
+
+  <!-- Level cards -->
+  <div class="levels-row">
+
+    <div class="level-card">
+      <div class="level-number">1. szint</div>
+      <div class="level-name">AI mint kereső</div>
+      <div class="level-desc">Chatbot. Kérdezek, választ kapok. Mint a Google, csak okosabb.</div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-number">2. szint</div>
+      <div class="level-name">AI mint gondolkodótárs</div>
+      <div class="level-desc">Aktívan használom az outputokat. Ötletelek, írok, döntök vele.</div>
+    </div>
+
+    <div class="level-card active">
+      <div class="level-number">3. szint</div>
+      <div class="level-name">AI ügynökök</div>
+      <div class="level-desc">Feladatokat delegálok. Az AI dolgozik, én felügyelem és irányítom.</div>
+    </div>
+
+    <div class="level-card future">
+      <div class="level-number">4. szint</div>
+      <div class="level-name">Autonóm AI</div>
+      <div class="level-desc">Célokat adok, 24/7 dolgozik. Új kollégákat és kompetenciákat épít.</div>
+    </div>
+
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-area">
+    <div class="chart-container">
+      <svg class="chart-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" class="curve-gradient-stop-3"/>
+            <stop offset="60%" class="curve-gradient-stop-2"/>
+            <stop offset="100%" class="curve-gradient-stop-1"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Axes -->
+        <line x1="80" y1="330" x2="1160" y2="330" stroke="#44403c" stroke-width="1.5"/>
+        <line x1="80" y1="330" x2="80" y2="20" stroke="#44403c" stroke-width="1.5"/>
+
+        <!-- Axis arrows -->
+        <polygon points="1160,325 1170,330 1160,335" fill="#44403c"/>
+        <polygon points="75,20 80,10 85,20" fill="#44403c"/>
+
+        <!-- Axis labels -->
+        <text x="1140" y="355" font-family="'DM Mono', monospace" font-size="12" fill="#78716c" text-anchor="end" letter-spacing="1.5" text-transform="uppercase">AUTONÓMIA</text>
+        <text x="30" y="30" font-family="'DM Mono', monospace" font-size="12" fill="#78716c" text-anchor="start" letter-spacing="1.5" transform="rotate(-90, 30, 30)" text-transform="uppercase">ÉRTÉK</text>
+
+        <!-- Level dividers (vertical dashed lines) -->
+        <line x1="350" y1="25" x2="350" y2="330" class="level-divider"/>
+        <line x1="620" y1="25" x2="620" y2="330" class="level-divider"/>
+        <line x1="890" y1="25" x2="890" y2="330" class="level-divider"/>
+
+        <!-- Level tick labels -->
+        <text x="215" y="355" class="level-tick-label">1. szint</text>
+        <text x="485" y="355" class="level-tick-label">2. szint</text>
+        <text x="755" y="355" class="level-tick-label">3. szint</text>
+        <text x="1025" y="355" class="level-tick-label">4. szint</text>
+
+        <!-- Exponential curve area (solid part, levels 1-3) -->
+        <path class="curve-area" d="
+          M 80,328
+          C 200,326 300,322 350,318
+          C 420,310 500,300 550,288
+          C 600,275 650,255 700,230
+          C 740,210 780,180 820,145
+          C 850,120 870,100 890,75
+          L 890,330
+          Z
+        "/>
+
+        <!-- Solid curve line (levels 1-3) -->
+        <path class="curve-line" d="
+          M 80,328
+          C 200,326 300,322 350,318
+          C 420,310 500,300 550,288
+          C 600,275 650,255 700,230
+          C 740,210 780,180 820,145
+          C 850,120 870,100 890,75
+        "/>
+
+        <!-- Dashed future area (level 4) -->
+        <path class="future-area" d="
+          M 890,75
+          C 910,55 950,38 1000,28
+          C 1050,20 1100,18 1150,16
+          L 1150,330
+          L 890,330
+          Z
+        "/>
+
+        <!-- Dashed future curve (level 4) -->
+        <path class="future-zone" d="
+          M 890,75
+          C 910,55 950,38 1000,28
+          C 1050,20 1100,18 1150,16
+        "/>
+
+        <!-- "Most people" annotation -->
+        <rect x="118" y="248" width="220" height="32" rx="16" fill="#EAEBE4"/>
+        <text x="228" y="269" font-family="'DM Mono', monospace" font-size="12" fill="#44403c" text-anchor="middle" font-weight="500">A legtöbb ember itt tart ↓</text>
+
+        <!-- Connector from annotation to curve area -->
+        <line x1="228" y1="280" x2="228" y2="324" class="connector-line-gray"/>
+
+        <!-- "We are here" dot on curve -->
+        <circle cx="855" cy="130" r="8" class="here-dot"/>
+        <circle cx="855" cy="130" r="14" fill="none" stroke="#FA7E00" stroke-width="2" opacity="0.3"/>
+
+        <!-- "We are here" annotation -->
+        <rect x="700" y="60" width="130" height="32" rx="16" fill="#FA7E00"/>
+        <text x="765" y="81" font-family="'DM Mono', monospace" font-size="12" fill="white" text-anchor="middle" font-weight="500">Mi itt tartunk</text>
+
+        <!-- Connector from "we are here" to dot -->
+        <line x1="765" y1="92" x2="855" y2="122" class="connector-line"/>
+
+        <!-- "Scary" annotation near level 4 -->
+        <rect x="960" y="48" width="170" height="30" rx="15" fill="none" stroke="#78716c" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="1045" y="68" font-family="'Playfair Display', Georgia, serif" font-size="13" fill="#78716c" text-anchor="middle" font-style="italic">Ez még ijesztő is...</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- Stamp -->
+  <div class="stamp">
+    1337<br/>The Intelligence Company
+  </div>
+
+</div>
+
+</body>
+</html>

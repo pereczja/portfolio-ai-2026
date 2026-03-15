@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decemberben valami megváltozott — 1337</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'PP Editorial Old';
+            src: local('PPEditorialNew-Ultralight');
+            font-weight: 200;
+        }
+
+        :root {
+            --bg: #FBFAF4;
+            --card: #EAEBE4;
+            --text: #111111;
+            --purple: #783FF3;
+            --orange: #FA7E00;
+            --stone-dark: #44403c;
+            --stone: #78716c;
+            --stone-light: #a8a29e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 56px 80px 64px;
+            position: relative;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-block;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 2px;
+            border: 1px solid var(--purple);
+            color: var(--purple);
+            margin-bottom: 20px;
+            animation: fadeUp 0.45s ease-out backwards;
+        }
+
+        h1 {
+            font-family: 'PP Editorial Old', 'Playfair Display', Georgia, serif;
+            font-weight: 200;
+            font-size: 3.2rem;
+            color: var(--text);
+            text-align: center;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            animation: fadeUp 0.45s ease-out 0.08s backwards;
+        }
+
+        h1 .italic-first {
+            font-style: italic;
+        }
+
+        .summary {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--stone-dark);
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.7;
+            margin-bottom: 48px;
+            animation: fadeUp 0.45s ease-out 0.16s backwards;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            width: 100%;
+            animation: fadeUp 0.45s ease-out 0.24s backwards;
+        }
+
+        .screenshot-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .screenshot-label {
+            padding: 12px 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--stone);
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .screenshot-label .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dot-purple { background: var(--purple); }
+        .dot-orange { background: var(--orange); }
+        .dot-dark { background: var(--text); }
+
+        .stamp {
+            position: absolute;
+            bottom: 42px;
+            right: 52px;
+            width: 90px;
+            height: 90px;
+            opacity: 0.5;
+        }
+
+        .stamp img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-content">
+            <span class="badge">The Shift</span>
+
+            <h1><span class="italic-first">D</span>ecemberben valami megváltozott</h1>
+
+            <p class="summary">
+                Az AI coding agentek átléptek egy küszöböt. A Spotify CTO-ja szerint a legjobb fejlesztőik nem írtak egyetlen sor kódot sem azóta. A Block (Square) 4000 embert küldött el. Karpathy szerint ez "rendkívül bomlasztó a programozás alapértelmezett munkafolyamatára nézve."
+            </p>
+
+            <div class="screenshots-grid">
+                <div class="screenshot-card">
+                    <img src="december-shift-assets/karpathy.png" alt="Andrej Karpathy tweet about AI coding agents">
+                    <div class="screenshot-label">
+                        <span class="dot dot-purple"></span>
+                        Andrej Karpathy, Feb 2026
+                    </div>
+                </div>
+
+                <div class="screenshot-card">
+                    <img src="december-shift-assets/spotify-ceo.png" alt="Spotify CEO on Claude Code">
+                    <div class="screenshot-label">
+                        <span class="dot dot-orange"></span>
+                        Gustav Söderström, Spotify CEO
+                    </div>
+                </div>
+
+                <div class="screenshot-card">
+                    <img src="december-shift-assets/block-layoffs.png" alt="Jack Dorsey Block layoffs">
+                    <div class="screenshot-label">
+                        <span class="dot dot-dark"></span>
+                        Jack Dorsey, Block CEO
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stamp">
+            <img src="assets/1337 stamp.png" alt="1337">
+        </div>
+    </div>
+</body>
+</html>
