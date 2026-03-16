@@ -2,8 +2,8 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI 2026: A döntés éve | 1337 Partners</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 2026: A döntés éve | 1337 Partners — v5</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -33,8 +33,6 @@
             background: var(--bg);
             color: var(--text);
             overflow: hidden;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         .slide {
@@ -163,7 +161,6 @@
         .nav-arrow.next { right: 16px; }
         .slide-number { position: fixed; bottom: 20px; right: 50px; font-size: 13px; color: var(--stone-muted); z-index: 100; }
 
-        /* Desktop medium */
         @media (max-height: 800px) {
             :root { --slide-pad-y: 32px; --slide-pad-x: 48px; }
             h1 { font-size: 52px; }
@@ -174,60 +171,13 @@
             .step-time { font-size: 12px; }
             .timeline-year { font-size: 24px; }
         }
-
-        /* ===== MOBILE ===== */
-        @media (max-width: 768px) {
-            :root { --slide-pad-y: 20px; --slide-pad-x: 20px; }
-
-            .slide { overflow-y: auto; overflow-x: hidden; padding-bottom: 48px; }
-
-            h1 { font-size: 32px; }
-            h2 { font-size: 26px; margin-bottom: 8px; }
-            h3 { font-size: 18px; }
-            p { font-size: 14px; }
-
-            .logo { height: 32px; margin-bottom: 16px; }
-            .tagline { font-size: 11px; letter-spacing: 2px; margin-bottom: 12px; }
-            .divider { margin: 16px 0; }
-            .stamp { width: 40px; bottom: 14px; right: 20px; }
-            .source { font-size: 10px; bottom: 14px; left: var(--slide-pad-x); }
-
-            .so-what { padding: 12px 16px; gap: 10px; flex-direction: column; align-items: flex-start; }
-            .so-what-label { font-size: 16px; }
-            .so-what p { font-size: 13px; }
-
-            .transition-text { font-size: 28px; max-width: 90%; }
-
-            /* Grid overrides for mobile */
-            .mobile-stack { grid-template-columns: 1fr !important; }
-
-            /* Timeline mobile */
-            .timeline-comparison { grid-template-columns: 1fr; gap: 8px; }
-            .timeline-divider { display: none; }
-            .timeline-column { padding: 14px; }
-            .timeline-year { font-size: 22px; }
-            .timeline-label-small { font-size: 11px; }
-            .step-icon { width: 26px; height: 26px; font-size: 12px; }
-            .step-title { font-size: 13px; }
-            .step-desc { font-size: 11px; }
-            .step-time { font-size: 11px; min-width: 50px; }
-            .summary-value { font-size: 20px; }
-            .summary-label { font-size: 9px; }
-
-            /* Nav */
-            .nav-arrow { display: none; }
-            .nav-dots { gap: 5px; bottom: 10px; }
-            .nav-dot { width: 6px; height: 6px; }
-            .slide-number { bottom: 10px; right: 20px; font-size: 11px; }
-
-            /* Capability overhang mobile overlay */
-            .slide.iframe-slide .mobile-hide { display: none; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- SLIDE 1: TITLE -->
+    <!-- =====================================================
+         SLIDE 1: TITLE
+         ===================================================== -->
     <div class="slide active center">
         <img src="assets/1337 logo.png" alt="1337" class="logo">
         <p class="tagline">The Intelligence Company</p>
@@ -237,28 +187,36 @@
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 2: DORSUM — december-shift (IFRAME) -->
+    <!-- =====================================================
+         SLIDE 2: DORSUM — december-shift (IFRAME)
+         ===================================================== -->
     <div class="slide iframe-slide">
         <iframe src="dorsum-slides/december-shift.html" loading="lazy"></iframe>
     </div>
 
-    <!-- SLIDE 3: HYPE + WBW -->
+    <!-- =====================================================
+         SLIDE 3: HYPE + WBW — cím + képek padding nélkül
+         ===================================================== -->
     <div class="slide">
         <h2>Két ábrát kell megérteni.</h2>
-        <div class="mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; min-height: 0; margin-top: 8px;">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; min-height: 0; margin-top: 8px;">
             <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; border-radius: 10px; overflow: hidden;">
-                <img src="assets/hype-cycle.png" alt="Gartner Hype Cycle" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                <img src="assets/gartner-hype.png" alt="Gartner Hype Cycle" style="max-width: 100%; max-height: 100%; object-fit: contain;">
             </div>
             <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; border-radius: 10px; overflow: hidden;">
-                <img src="assets/wbw-intelligence.png" alt="Wait But Why AI Intelligence" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                <img src="assets/wbw-ai.png" alt="Wait But Why AI Intelligence" style="max-width: 100%; max-height: 100%; object-fit: contain;">
             </div>
         </div>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 4: PERCEPTION GAP -->
+    <!-- =====================================================
+         SLIDE 4: PERCEPTION GAP
+         ===================================================== -->
     <div class="slide">
         <h2>A Perception Gap</h2>
+
         <div class="merged-chart-container">
             <svg viewBox="0 0 900 380" preserveAspectRatio="xMidYMid meet">
                 <rect x="80" y="20" width="780" height="310" fill="white" rx="8" stroke="#eee"/>
@@ -284,6 +242,7 @@
                 <text x="530" y="368" class="year-marker" fill="#FA7E00" font-size="15">2026</text>
             </svg>
         </div>
+
         <div class="so-what">
             <span class="so-what-label">So what?</span>
             <p>Aki most kiábrándul, az a legrosszabb pillanatban áll le. A tech kész — a kérdés az, ki veszi észre időben.</p>
@@ -291,16 +250,13 @@
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 5: DORSUM — Exponential 5 (IFRAME) -->
-    <div class="slide iframe-slide">
-        <iframe src="dorsum-slides/exponential-slide-5.html" loading="lazy"></iframe>
-    </div>
-
-    <!-- SLIDE 6: DORSUM — Exponential 6 (IFRAME) + Rekurzivitás overlay -->
+    <!-- =====================================================
+         SLIDE 5: DORSUM — Exponential 6 (IFRAME) + Rekurzivitás overlay
+         ===================================================== -->
     <div class="slide iframe-slide" style="position: relative;">
         <iframe src="dorsum-slides/exponential-slide-6.html" loading="lazy"></iframe>
         <div style="position: absolute; bottom: 50px; right: 40px; z-index: 10; display: flex; align-items: center; gap: 20px; background: rgba(0,0,0,0.82); backdrop-filter: blur(10px); padding: 18px 32px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); max-width: 48%;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="140" height="16" viewBox="0 0 1024.2 115" style="flex-shrink: 0; opacity: 0.8;" class="mobile-hide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="140" height="16" viewBox="0 0 1024.2 115" style="flex-shrink: 0; opacity: 0.8;">
                 <path fill="#FBFAF4" d="M250.649,23.3494h37.328V113.094h23.825V23.3494H349.13V1.9061H250.649Z"/>
                 <path fill="#FBFAF4" d="M208.557,79.7376,158.522,1.9061H131.519V113.094h23.032V35.2624l50.035,77.8316h27.002V1.9061H208.557Z"/>
                 <path fill="#FBFAF4" d="M444.434,46.2224H392.017V1.9061H368.191V113.094h23.826V67.6657h52.417V113.094H468.26V1.9061H444.434Z"/>
@@ -311,15 +267,19 @@
                 <path fill="#FBFAF4" d="M796.74,1.9061H742.417V113.094h23.826V72.7486H796.74c25.256,0,40.663-13.3425,40.663-35.4213S821.996,1.9061,796.74,1.9061Zm-1.112,49.3991H766.243V23.3494h29.385c11.755,0,17.949,4.7652,17.949,13.9779S807.383,51.3052,795.628,51.3052Z"/>
                 <path fill="#FBFAF4" d="M592.631,35.7389c0-20.9668-15.407-33.8328-40.663-33.8328H497.645V113.094h23.826V69.5718h26.525l23.827,43.5222h26.368L571.807,66.2568C585.05,61.166,592.631,50.4459,592.631,35.7389Zm-71.16-12.39h29.385c11.754,0,17.949,4.2887,17.949,12.39s-6.195,12.39-17.949,12.39H521.471Z"/>
             </svg>
+            <div style="width: 1px; height: 28px; background: rgba(255,255,255,0.2); flex-shrink: 0;"></div>
             <p style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 22px; color: rgba(251,250,244,0.95); max-width: none; line-height: 1.3; font-style: italic;">
                 Amit látunk az elmúlt 3 hónapban — az már <span style="color: var(--orange);">rekurzivitás</span>?
             </p>
         </div>
     </div>
 
-    <!-- SLIDE 7: K-SHAPED + CHAMATH -->
+    <!-- =====================================================
+         SLIDE 7: K-SHAPED + CHAMATH
+         ===================================================== -->
     <div class="slide">
         <h2>K-alakú divergencia</h2>
+
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; gap: 24px;">
             <div style="height: 300px; width: 100%;">
                 <svg viewBox="0 0 1000 250" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%;">
@@ -327,14 +287,15 @@
                     <line x1="60" y1="125" x2="160" y2="125" stroke="#78716c" stroke-width="5" stroke-linecap="round"/>
                     <circle cx="160" cy="125" r="8" fill="#111111"/>
                     <path d="M 160 125 Q 280 85 420 20" class="k-line k-line-up"/>
-                    <text x="440" y="32" class="k-label k-label-up" font-size="22">Power userek: +32% produktivitás</text>
+                    <text x="440" y="32" class="k-label k-label-up" font-size="22">Power userek: 6x produktívabbak</text>
                     <path d="M 160 125 Q 280 165 420 230" class="k-line k-line-down"/>
-                    <text x="440" y="234" class="k-label k-label-down" font-size="22">Lemaradók: 95% AI projekt nem hoz ROI-t</text>
+                    <text x="440" y="234" class="k-label k-label-down" font-size="22">Lemaradók: 95% AI pilot nem hoz ROI-t</text>
                     <text x="60" y="245" class="k-annotation" font-size="14">2024</text>
                     <text x="160" y="245" class="k-annotation" font-size="14">2025</text>
                     <text x="420" y="245" class="k-annotation" font-size="14">2026</text>
                 </svg>
             </div>
+
             <div style="background: var(--surface); padding: 28px 36px; border-radius: 12px; border-left: 6px solid var(--orange);">
                 <p style="font-family: Georgia, serif; font-size: 26px; font-style: italic; line-height: 1.4; color: var(--text); max-width: none;">
                     "2025 was supposed to be the year of agents. So far it's been the year of letdowns."
@@ -342,17 +303,23 @@
                 <p style="font-size: 14px; color: var(--stone-muted); margin-top: 10px;">— Chamath Palihapitiya, 2025</p>
             </div>
         </div>
-        <p class="source">Forrás: Harvard/BCG 2024, NBER 2026, CNBC</p>
+
+        <p class="source">Forrás: OpenAI Enterprise AI Report 2025 (9K worker), MIT GenAI Divide 2025</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 8: CAPABILITY OVERHANG -->
+    <!-- =====================================================
+         SLIDE 8: CAPABILITY OVERHANG — tweet nagyobb
+         ===================================================== -->
     <div class="slide">
         <h2>Capability Overhang</h2>
-        <div class="mobile-stack" style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; flex: 1; min-height: 0; margin-top: 8px;">
+
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; flex: 1; min-height: 0; margin-top: 8px;">
+            <!-- Tweet — larger -->
             <div style="display: flex; align-items: center; justify-content: center; min-height: 0; background: #111; border-radius: 12px; padding: 12px;">
                 <img src="assets/openai-tweet.png" alt="OpenAI Tweet" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;">
             </div>
+            <!-- Two stacked boxes -->
             <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center;">
                 <div style="background: var(--surface); padding: 28px; border-radius: 12px; border-left: 5px solid var(--purple);">
                     <h3 style="font-size: 22px; color: var(--purple); margin-bottom: 10px;">Mi ez?</h3>
@@ -371,53 +338,17 @@
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 9: TRANSITION -->
+    <!-- =====================================================
+         SLIDE 9: TRANSITION
+         ===================================================== -->
     <div class="slide dark transition-slide">
         <p class="transition-text">Nézzük meg konkrétumok szintjén.</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 10: PERSONAL STORY -->
-    <div class="slide">
-        <h2>Hogyan készültem erre az előadásra?</h2>
-        <div style="flex: 1; display: flex; align-items: center; min-height: 0; margin-top: 8px;">
-        <div class="timeline-comparison" style="width: 100%;">
-            <div class="timeline-column past">
-                <div class="timeline-header">
-                    <span class="timeline-year" style="color: var(--orange);">2024</span>
-                    <span class="timeline-label-small">Portfolio konf.</span>
-                </div>
-                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Brief készítés</div><div class="step-desc">Mit akarok mondani</div></div><div class="step-time">2-3 óra</div></div>
-                <div class="process-step"><div class="step-icon human">&#x1f465;</div><div class="step-content"><div class="step-title">2 kolléga: Kutatás, design</div><div class="step-desc">Adatok, vizualizáció</div></div><div class="step-time">1-2 nap</div></div>
-                <div class="process-step"><div class="step-icon wait">&#x23f3;</div><div class="step-content"><div class="step-title">Várakozás</div><div class="step-desc">Amíg elkészül...</div></div><div class="step-time">—</div></div>
-                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Feedback, javítás</div><div class="step-desc">Ezt ide, azt oda húzni</div></div><div class="step-time">fél nap</div></div>
-                <div class="process-step"><div class="step-icon human">&#x1f465;</div><div class="step-content"><div class="step-title">Kollégák: Átdolgozás</div><div class="step-desc">Javítások beépítése</div></div><div class="step-time">fél nap</div></div>
-                <div class="summary-row">
-                    <div class="summary-item"><div class="summary-value bad">3 fő</div><div class="summary-label">Csapat</div></div>
-                    <div class="summary-item"><div class="summary-value bad">~20%</div><div class="summary-label">Kreatív idő</div></div>
-                </div>
-            </div>
-            <div class="timeline-divider"><div class="vs-badge">VS</div></div>
-            <div class="timeline-column present">
-                <div class="timeline-header">
-                    <span class="timeline-year" style="color: var(--purple);">2026</span>
-                    <span class="timeline-label-small">Ez az előadás</span>
-                </div>
-                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Átgondolom mit mondok</div><div class="step-desc">Üzenetek, struktúra</div></div><div class="step-time">1-2 óra</div></div>
-                <div class="process-step"><div class="step-icon ai">&#x1f916;</div><div class="step-content"><div class="step-title">AI agent: Első draft</div><div class="step-desc">Kutatás, slide-ok, vizualizáció</div></div><div class="step-time">~percek</div></div>
-                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Iteráció az AI-jal</div><div class="step-desc">"Ezt másképp", "Add hozzá"</div></div><div class="step-time">1-2 óra</div></div>
-                <div class="process-step"><div class="step-icon human">&#x1f464;</div><div class="step-content"><div class="step-title">Gondolkodás, készülés</div><div class="step-desc">Hogyan adjam át? Mi a fő üzenet?</div></div><div class="step-time">Végre van időm!</div></div>
-                <div class="summary-row">
-                    <div class="summary-item"><div class="summary-value good">1 fő</div><div class="summary-label">Csapat</div></div>
-                    <div class="summary-item"><div class="summary-value good">~80%</div><div class="summary-label">Kreatív idő</div></div>
-                </div>
-            </div>
-        </div>
-        </div>
-        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
-    </div>
-
-    <!-- SLIDE 11: DORSUM — Coding Agents (IFRAME) + Logo overlays -->
+    <!-- =====================================================
+         SLIDE 10: DORSUM — Coding Agents (IFRAME) + Logo overlays
+         ===================================================== -->
     <div class="slide iframe-slide" style="position: relative;">
         <iframe src="dorsum-slides/coding-agents-slide.html" loading="lazy"></iframe>
         <div style="position: absolute; bottom: 60px; left: 40px; z-index: 10; display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
@@ -436,24 +367,119 @@
         </div>
     </div>
 
-    <!-- SLIDE 12-13: DORSUM — AI Érettségi (IFRAME) -->
+    <!-- =====================================================
+         SLIDE 12: DORSUM — AI Érettségi 1 (IFRAME)
+         [GIT: cím → "A modell okosabb, mint ahogy használod"]
+         ===================================================== -->
     <div class="slide iframe-slide">
         <iframe src="dorsum-slides/ai-erettsegi-modell.html" loading="lazy"></iframe>
     </div>
+
+    <!-- =====================================================
+         SLIDE 13: DORSUM — AI Érettségi 2 (IFRAME)
+         [GIT: cím → "Válj menedzserré"]
+         ===================================================== -->
     <div class="slide iframe-slide">
         <iframe src="dorsum-slides/ai-erettsegi-modell-2.html" loading="lazy"></iframe>
     </div>
 
-    <!-- SLIDE 14: TRANSITION -->
+    <!-- =====================================================
+         SLIDE 13: PERSONAL STORY — cím + nagyobb
+         ===================================================== -->
+    <div class="slide">
+        <h2>Hogyan készültem erre az előadásra?</h2>
+
+        <div style="flex: 1; display: flex; align-items: center; min-height: 0; margin-top: 8px;">
+        <div class="timeline-comparison" style="width: 100%;">
+            <div class="timeline-column past">
+                <div class="timeline-header">
+                    <span class="timeline-year" style="color: var(--orange);">2024</span>
+                    <span class="timeline-label-small">Portfolio konf.</span>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon human">&#x1f464;</div>
+                    <div class="step-content"><div class="step-title">Brief készítés</div><div class="step-desc">Mit akarok mondani</div></div>
+                    <div class="step-time">2-3 óra</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon human">&#x1f465;</div>
+                    <div class="step-content"><div class="step-title">2 kolléga: Kutatás, design</div><div class="step-desc">Adatok, vizualizáció</div></div>
+                    <div class="step-time">1-2 nap</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon wait">&#x23f3;</div>
+                    <div class="step-content"><div class="step-title">Várakozás</div><div class="step-desc">Amíg elkészül...</div></div>
+                    <div class="step-time">—</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon human">&#x1f464;</div>
+                    <div class="step-content"><div class="step-title">Feedback, javítás</div><div class="step-desc">Ezt ide, azt oda húzni</div></div>
+                    <div class="step-time">fél nap</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon human">&#x1f465;</div>
+                    <div class="step-content"><div class="step-title">Kollégák: Átdolgozás</div><div class="step-desc">Javítások beépítése</div></div>
+                    <div class="step-time">fél nap</div>
+                </div>
+                <div class="summary-row">
+                    <div class="summary-item"><div class="summary-value bad">3 fő</div><div class="summary-label">Csapat</div></div>
+                    <div class="summary-item"><div class="summary-value bad">~20%</div><div class="summary-label">Kreatív idő</div></div>
+                </div>
+            </div>
+
+            <div class="timeline-divider"><div class="vs-badge">VS</div></div>
+
+            <div class="timeline-column present">
+                <div class="timeline-header">
+                    <span class="timeline-year" style="color: var(--purple);">2026</span>
+                    <span class="timeline-label-small">Ez az előadás</span>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon human">&#x1f464;</div>
+                    <div class="step-content"><div class="step-title">Átgondolom mit mondok</div><div class="step-desc">Üzenetek, struktúra</div></div>
+                    <div class="step-time">1-2 óra</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon ai">&#x1f916;</div>
+                    <div class="step-content"><div class="step-title">AI agent: Első draft</div><div class="step-desc">Kutatás, slide-ok, vizualizáció</div></div>
+                    <div class="step-time">~percek</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon human">&#x1f464;</div>
+                    <div class="step-content"><div class="step-title">Iteráció az AI-jal</div><div class="step-desc">"Ezt másképp", "Add hozzá"</div></div>
+                    <div class="step-time">1-2 óra</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-icon human">&#x1f464;</div>
+                    <div class="step-content"><div class="step-title">Gondolkodás, készülés</div><div class="step-desc">Hogyan adjam át? Mi a fő üzenet?</div></div>
+                    <div class="step-time">Végre van időm!</div>
+                </div>
+                <div class="summary-row">
+                    <div class="summary-item"><div class="summary-value good">1 fő</div><div class="summary-label">Csapat</div></div>
+                    <div class="summary-item"><div class="summary-value good">~80%</div><div class="summary-label">Kreatív idő</div></div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- =====================================================
+         SLIDE 14: TRANSITION
+         ===================================================== -->
     <div class="slide dark transition-slide">
         <p class="transition-text">Nézzünk rá másik szemszögből.</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 15: TOKEN EVOLUTION + SWE-BENCH -->
+    <!-- =====================================================
+         SLIDE 15: TOKEN EVOLUTION + SWE-BENCH — redesigned
+         ===================================================== -->
     <div class="slide">
         <h2>Az agent 30x több compute-ot eszik</h2>
-        <div class="mobile-stack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; flex: 1; min-height: 0; margin-top: 12px;">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; flex: 1; min-height: 0; margin-top: 12px;">
+            <!-- Left: Waterfall + cost -->
             <div style="display: flex; flex-direction: column; justify-content: center; gap: 20px; min-height: 0;">
                 <div style="display: flex; justify-content: center; align-items: flex-end; gap: 32px;">
                     <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
@@ -482,21 +508,28 @@
                     <p style="font-size: 18px; color: var(--bg); max-width: none; line-height: 1.4;">Saját példám: Claude API <strong style="color: var(--orange); font-size: 22px;">€2,700/hó</strong> — 26x szubvenció</p>
                 </div>
             </div>
+
+            <!-- Right: SWE-bench -->
             <div style="display: flex; flex-direction: column; gap: 10px; min-height: 0;">
                 <h3 style="font-size: 20px; color: var(--purple); margin-bottom: 0;">SWE-bench Verified</h3>
                 <div style="background: #1a1a2e; border-radius: 10px; padding: 8px; flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0;">
-                    <img src="assets/swebench.png" alt="SWE-bench" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px;">
+                    <img src="assets/swe-bench.png" alt="SWE-bench" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px;">
                 </div>
             </div>
         </div>
+
         <p class="source">Forrás: SWE-bench Verified 2026, Építési Napló #7</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 16: HUNGARY -->
+    <!-- =====================================================
+         SLIDE 16: HUNGARY — centered, visual weight
+         ===================================================== -->
     <div class="slide">
         <h2>Magyarország versenyképességi hátránya</h2>
+
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; min-height: 0;">
+            <!-- Bar chart -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 16px;">
                     <span style="font-size: 20px; font-weight: 500; text-align: right;">Románia</span>
@@ -511,26 +544,35 @@
                     <div style="height: 56px; background: var(--surface); border-radius: 6px; display: flex; align-items: center; padding-left: 16px; gap: 12px;"><div style="width: 6px; height: 100%; background: var(--orange); border-radius: 6px 0 0 6px; flex-shrink: 0;"></div><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--orange); font-weight: bold;">1 MW</span></div>
                 </div>
             </div>
+
             <p style="text-align: center; font-size: 16px; color: var(--stone-muted); max-width: none;">AI-specifikus adatközponti kapacitás (MW)</p>
+
             <p style="text-align: center; font-size: 18px; color: var(--stone-dark); max-width: none; margin-top: 8px;">Nincs dedikált szuverén AI-infrastruktúra</p>
         </div>
+
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 17: TRANSITION -->
+    <!-- =====================================================
+         SLIDE 17: TRANSITION
+         ===================================================== -->
     <div class="slide dark transition-slide">
         <p class="transition-text">És mi lesz az emberekkel?</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 18: KARPATHY — AI Job Exposure Map -->
+    <!-- =====================================================
+         SLIDE 18: KARPATHY — AI Job Exposure Map (LIVE)
+         ===================================================== -->
     <div class="slide">
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
             <h2 style="margin-bottom: 0;">AI Job Exposure Map</h2>
             <span style="font-size: 14px; color: var(--stone-muted); font-family: 'DM Mono', monospace;">karpathy.ai/jobs — 2026.03.15.</span>
         </div>
+
         <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; min-height: 0;">
-            <div class="mobile-stack" style="display: flex; gap: 16px; flex-shrink: 0;">
+            <!-- Key stats bar -->
+            <div style="display: flex; gap: 16px; flex-shrink: 0;">
                 <div style="flex: 1; background: var(--surface); padding: 14px 18px; border-radius: 10px; border-left: 4px solid var(--orange);">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 36px; color: var(--orange);">42%</div>
                     <div style="font-size: 13px; color: var(--stone-muted);">US munkák magas kitettségűek (7+)</div>
@@ -544,42 +586,61 @@
                     <div style="font-size: 13px; color: var(--stone-muted);">érintett munkahely</div>
                 </div>
             </div>
+
+            <!-- Treemap image -->
             <div style="flex: 1; border-radius: 10px; overflow: hidden; min-height: 0; display: flex; align-items: center; justify-content: center; background: #1a1a2e;">
                 <img src="assets/karpathy-treemap.jpg" alt="AI Exposure of the US Job Market — Karpathy treemap" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px;">
             </div>
         </div>
+
         <p class="source">Forrás: Andrej Karpathy, "AI Exposure of the US Job Market", 2026. március 15.</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 19: WORKFORCE -->
+    <!-- =====================================================
+         SLIDE 19: WORKFORCE — visual weight
+         ===================================================== -->
     <div class="slide">
         <h2>Hogyan fog lefutni?</h2>
+
         <div style="flex: 1; display: flex; align-items: center; min-height: 0;">
-            <div class="mobile-stack" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%;">
                 <div style="background: var(--orange); color: white; padding: 28px; border-radius: 12px; display: flex; flex-direction: column;">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 48px; margin-bottom: 8px;">1</div>
                     <h3 style="color: white; font-size: 22px; margin-bottom: 12px;">Pályakezdők</h3>
                     <p style="color: rgba(255,255,255,0.9); font-size: 16px; line-height: 1.5; max-width: none;">Junior pozíciók eltűnnek. Nincs kontextus, nincs hely.</p>
                     <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.25); display: flex; gap: 20px;">
-                        <div style="text-align: center;"><div style="font-family: Georgia, serif; font-size: 32px; font-weight: bold;">-30%</div><div style="font-size: 12px; opacity: 0.8;">Goldman junior</div></div>
-                        <div style="text-align: center;"><div style="font-family: Georgia, serif; font-size: 32px; font-weight: bold;">10x</div><div style="font-size: 12px; opacity: 0.8;">AI-native output</div></div>
+                        <div style="text-align: center;">
+                            <div style="font-family: Georgia, serif; font-size: 32px; font-weight: bold;">-30%</div>
+                            <div style="font-size: 12px; opacity: 0.8;">Goldman junior</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-family: Georgia, serif; font-size: 32px; font-weight: bold;">10x</div>
+                            <div style="font-size: 12px; opacity: 0.8;">AI-native output</div>
+                        </div>
                     </div>
                 </div>
+
                 <div style="background: var(--surface); padding: 28px; border-radius: 12px; border-top: 5px solid var(--orange); display: flex; flex-direction: column;">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 48px; color: var(--orange); margin-bottom: 8px;">2</div>
                     <h3 style="font-size: 22px; margin-bottom: 12px;">Tech + back office</h3>
                     <p style="color: var(--stone-dark); font-size: 16px; line-height: 1.5; max-width: none;">Hiring freeze. Csendes leépítés. Block kimondta hangosan.</p>
-                    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; color: var(--stone-muted);">Csendes munkanélküliség — USA + EU</div>
+                    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; color: var(--stone-muted);">
+                        Csendes munkanélküliség — USA + EU
+                    </div>
                 </div>
+
                 <div style="background: var(--surface); padding: 28px; border-radius: 12px; border-top: 5px solid var(--stone-muted); display: flex; flex-direction: column;">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 48px; color: var(--stone-muted); margin-bottom: 8px;">3</div>
                     <h3 style="font-size: 22px; margin-bottom: 12px;">Teljes gazdaság</h3>
                     <p style="color: var(--stone-dark); font-size: 16px; line-height: 1.5; max-width: none;">Lassabban, de jön. Csapatméretek mindenhol csökkennek.</p>
-                    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; color: var(--stone-muted);">A kérdés: mikor ér el hozzátok?</div>
+                    <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 14px; color: var(--stone-muted);">
+                        A kérdés: mikor ér el hozzátok?
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="so-what">
             <span class="so-what-label">So what?</span>
             <p>"Nem az AI veszi el a junior állást. A senior veszi el, aki AI-t használ."</p>
@@ -587,41 +648,66 @@
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 19: MIT TEHETÜNK -->
+    <!-- =====================================================
+         SLIDE 19: MIT TEHETÜNK — 3 pillars with more weight
+         ===================================================== -->
     <div class="slide">
         <h2>Mit tehetünk?</h2>
+
         <div style="flex: 1; display: flex; align-items: center; min-height: 0;">
-            <div class="mobile-stack" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%;">
                 <div style="background: var(--surface); padding: 32px; border-radius: 12px; border-top: 5px solid var(--purple); display: flex; flex-direction: column;">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 52px; color: var(--purple); margin-bottom: 12px;">01</div>
                     <h3 style="font-size: 24px; margin-bottom: 12px;">Tapasztalat</h3>
                     <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Kerülj a K tetejére. 2 nap befektetés, azonnali hatás.</p>
-                    <div style="margin-top: auto; padding-top: 16px;"><div style="background: white; padding: 12px 16px; border-radius: 8px; text-align: center;"><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--purple);">$3.70–$10.30</span><span style="display: block; font-size: 12px; color: var(--stone-muted);">ROI per dollár (IDC/Microsoft)</span></div></div>
+                    <div style="margin-top: auto; padding-top: 16px;">
+                        <div style="background: white; padding: 12px 16px; border-radius: 8px; text-align: center;">
+                            <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--purple);">$3.70–$10.30</span>
+                            <span style="display: block; font-size: 12px; color: var(--stone-muted);">ROI per dollár (IDC/Microsoft)</span>
+                        </div>
+                    </div>
                 </div>
+
                 <div style="background: var(--surface); padding: 32px; border-radius: 12px; border-top: 5px solid var(--orange); display: flex; flex-direction: column;">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 52px; color: var(--orange); margin-bottom: 12px;">02</div>
                     <h3 style="font-size: 24px; margin-bottom: 12px;">Újragondolás</h3>
                     <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Ne foltozás. Szervezd újra a munkát és az adatokat.</p>
-                    <div style="margin-top: auto; padding-top: 16px;"><div style="background: white; padding: 12px 16px; border-radius: 8px;"><div style="background: #FFF9C4; padding: 10px 14px; border-radius: 2px; box-shadow: 2px 3px 8px rgba(0,0,0,0.1);"><p style="font-size: 13px; color: #333; max-width: none;">"2 órás beszélgetés alatt <strong>teljes appot</strong> raktunk össze."</p></div></div></div>
+                    <div style="margin-top: auto; padding-top: 16px;">
+                        <div style="background: white; padding: 12px 16px; border-radius: 8px;">
+                            <div class="sticky-note" style="background: #FFF9C4; padding: 10px 14px; border-radius: 2px; box-shadow: 2px 3px 8px rgba(0,0,0,0.1);">
+                                <p style="font-size: 13px; color: #333; max-width: none;">"2 órás beszélgetés alatt <strong>teljes appot</strong> raktunk össze."</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div style="background: var(--surface); padding: 32px; border-radius: 12px; border-top: 5px solid var(--text); display: flex; flex-direction: column;">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 52px; color: var(--text); margin-bottom: 12px;">03</div>
                     <h3 style="font-size: 24px; margin-bottom: 12px;">Szuverén kapacitás</h3>
                     <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Országosan kell. Nekünk van kutatásunk erre.</p>
-                    <div style="margin-top: auto; padding-top: 16px;"><div style="background: white; padding: 12px 16px; border-radius: 8px; text-align: center;"><span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--purple);">77–80 MW</span><span style="display: block; font-size: 12px; color: var(--stone-muted);">becsült szükséglet</span></div></div>
+                    <div style="margin-top: auto; padding-top: 16px;">
+                        <div style="background: white; padding: 12px 16px; border-radius: 8px; text-align: center;">
+                            <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--purple);">77–80 MW</span>
+                            <span style="display: block; font-size: 12px; color: var(--stone-muted);">becsült szükséglet</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
     </div>
 
-    <!-- SLIDE 20: QR CLOSING -->
+    <!-- =====================================================
+         SLIDE 20: QR CLOSING
+         ===================================================== -->
     <div class="slide center">
         <img src="assets/1337 logo.png" alt="1337" class="logo" style="height: 56px; margin-bottom: 32px;">
         <p class="tagline">The Intelligence Company</p>
+
         <div style="background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); margin: 32px 0;">
             <img src="assets/qr-epitesinaplo.png" alt="QR Code" style="width: 200px; height: 200px;">
         </div>
+
         <p style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 28px; color: var(--purple); margin-bottom: 6px;">Építési Napló</p>
         <p style="font-size: 18px; color: var(--stone-muted);">epitesinaplo.substack.com</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
@@ -671,31 +757,8 @@
             else if (e.key === '0') goToSlide(9);
         });
 
-        // Touch/Swipe navigation
-        let touchStartX = 0;
-        let touchStartY = 0;
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-        document.addEventListener('touchend', (e) => {
-            const dx = e.changedTouches[0].screenX - touchStartX;
-            const dy = e.changedTouches[0].screenY - touchStartY;
-            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-                if (dx < 0) nextSlide();
-                else prevSlide();
-            }
-        }, { passive: true });
-
-        // Also allow tap on left/right halves
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.nav-dot, .nav-arrow, a, button, iframe')) return;
-            const x = e.clientX / window.innerWidth;
-            if (x > 0.7) nextSlide();
-            else if (x < 0.3) prevSlide();
-        });
-
         updateSlide();
+
     </script>
 </body>
 </html>
