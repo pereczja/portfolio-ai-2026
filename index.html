@@ -171,6 +171,168 @@
             .step-time { font-size: 12px; }
             .timeline-year { font-size: 24px; }
         }
+
+        /* ===== MOBILE: Tablet ===== */
+        @media (max-width: 1024px) {
+            :root { --slide-pad-y: 28px; --slide-pad-x: 32px; }
+            h1 { font-size: 44px; }
+            h2 { font-size: 34px; }
+            h3 { font-size: 20px; }
+            p { font-size: 16px; }
+            .transition-text { font-size: 38px; }
+            .nav-arrow { display: none; }
+        }
+
+        /* ===== MOBILE: Phone ===== */
+        @media (max-width: 768px) {
+            :root { --slide-pad-y: 20px; --slide-pad-x: 20px; }
+
+            .slide { overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 48px; }
+
+            h1 { font-size: 32px; }
+            h2 { font-size: 26px; margin-bottom: 8px; }
+            h3 { font-size: 18px; }
+            p { font-size: 14px; line-height: 1.4; }
+            .tagline { font-size: 11px; letter-spacing: 2px; margin-bottom: 12px; }
+            .divider { margin: 16px 0; }
+            .logo { height: 36px; margin-bottom: 16px; }
+            .stamp { width: 50px; bottom: 10px; right: 16px; }
+            .source { font-size: 10px; bottom: 8px; left: 20px; max-width: 70%; }
+            .transition-text { font-size: 28px; max-width: 90%; }
+            .nav-dots { gap: 5px; bottom: 10px; }
+            .nav-dot { width: 6px; height: 6px; }
+            .slide-number { font-size: 11px; bottom: 10px; right: 20px; }
+
+            /* So What box */
+            .so-what { padding: 12px 16px; gap: 10px; flex-direction: column; align-items: flex-start; }
+            .so-what-label { font-size: 16px; }
+            .so-what p { font-size: 14px; }
+
+            /* Hype + WBW: 2 cols → stacked */
+            .slide:nth-child(3) > div[style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+
+            /* Capability Overhang: 2 cols → stacked */
+            .slide:nth-child(8) > div[style*="grid-template-columns: 1.4fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            .slide:nth-child(8) > div[style*="grid-template-columns: 1.4fr"] > div:first-child {
+                max-height: 40vh;
+            }
+
+            /* K-shaped chart: reduce height */
+            .slide:nth-child(7) div[style*="height: 300px"] {
+                height: 180px !important;
+            }
+            .k-label { font-size: 14px !important; }
+
+            /* Timeline: 3 cols → stacked */
+            .timeline-comparison {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+            .timeline-divider { flex-direction: row; padding: 4px 0; }
+            .vs-badge { width: 32px; height: 32px; font-size: 12px; }
+            .timeline-column { padding: 14px; }
+            .timeline-year { font-size: 22px; }
+            .timeline-label-small { font-size: 11px; }
+            .process-step { padding: 6px 0; gap: 8px; }
+            .step-icon { width: 26px; height: 26px; font-size: 12px; }
+            .step-title { font-size: 13px; }
+            .step-desc { font-size: 11px; }
+            .step-time { font-size: 11px; min-width: 50px; }
+            .summary-row { padding: 8px; }
+            .summary-value { font-size: 20px; }
+            .summary-label { font-size: 10px; }
+
+            /* Token + SWE: 2 cols → stacked */
+            .slide:nth-child(15) > div[style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+
+            /* Hungary bar chart: narrower labels */
+            .slide:nth-child(16) div[style*="grid-template-columns: 160px"] {
+                grid-template-columns: 100px 1fr !important;
+            }
+            .slide:nth-child(16) span[style*="font-size: 20px"],
+            .slide:nth-child(16) span[style*="font-size: 22px"] {
+                font-size: 14px !important;
+            }
+
+            /* Karpathy stat cards: wrap */
+            .slide:nth-child(18) div[style*="display: flex; gap: 16px"] {
+                flex-wrap: wrap !important;
+            }
+            .slide:nth-child(18) div[style*="display: flex; gap: 16px"] > div {
+                flex: 1 1 calc(50% - 8px) !important;
+                min-width: 140px;
+            }
+            .slide:nth-child(18) div[style*="font-size: 36px"] {
+                font-size: 28px !important;
+            }
+
+            /* Workforce 3 cards: stacked */
+            .slide:nth-child(19) div[style*="grid-template-columns: repeat(3"],
+            .slide:nth-child(20) div[style*="grid-template-columns: repeat(3"] {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+
+            /* Iframe overlay badges */
+            .slide.iframe-slide div[style*="position: absolute; bottom: 60px"] {
+                bottom: 16px !important;
+                left: 12px !important;
+                right: 12px !important;
+            }
+            .slide.iframe-slide div[style*="position: absolute; bottom: 50px"] {
+                bottom: 12px !important;
+                right: 12px !important;
+                left: 12px !important;
+                max-width: 95% !important;
+                padding: 10px 16px !important;
+            }
+            .slide.iframe-slide div[style*="position: absolute; bottom: 50px"] p {
+                font-size: 16px !important;
+            }
+            .slide.iframe-slide div[style*="position: absolute; bottom: 50px"] svg {
+                width: 100px !important;
+            }
+        }
+
+        /* ===== MOBILE: Small phone ===== */
+        @media (max-width: 420px) {
+            :root { --slide-pad-y: 14px; --slide-pad-x: 14px; }
+            h1 { font-size: 26px; }
+            h2 { font-size: 22px; }
+            .transition-text { font-size: 24px; }
+            .logo { height: 28px; }
+
+            /* Token bars: smaller */
+            .slide:nth-child(15) div[style*="width: 120px"] {
+                width: 80px !important;
+            }
+            .slide:nth-child(15) div[style*="height: 320px"] {
+                height: 200px !important;
+            }
+            .slide:nth-child(15) div[style*="height: 160px"] {
+                height: 100px !important;
+            }
+            .slide:nth-child(15) div[style*="height: 80px; background: var(--surface)"] {
+                height: 50px !important;
+            }
+
+            /* Karpathy: single column stats */
+            .slide:nth-child(18) div[style*="display: flex; gap: 16px"] {
+                flex-direction: column !important;
+            }
+            .slide:nth-child(18) div[style*="display: flex; gap: 16px"] > div {
+                flex: 1 1 100% !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -229,9 +391,8 @@
                 <text x="125" y="350" class="level-label" fill="#2563eb">Hype / Várakozás</text>
                 <rect x="300" y="345" width="20" height="4" fill="#dc2626"/>
                 <text x="325" y="350" class="level-label" fill="#dc2626">Reality / Képesség</text>
-                <text x="310" y="48" class="level-label" fill="#2563eb" font-size="12">Peak Hype (2023)</text>
                 <text x="520" y="275" class="level-label" fill="#2563eb" font-size="12">Trough (2026)</text>
-                <text x="620" y="48" class="level-label" fill="#dc2626" font-size="12">Einstein+</text>
+                <text x="710" y="38" class="level-label" fill="#dc2626" font-size="13" font-weight="bold">Einstein+</text>
                 <line x1="560" y1="30" x2="560" y2="320" stroke="#FA7E00" stroke-width="3" stroke-dasharray="8,4"/>
                 <rect x="565" y="105" width="140" height="70" fill="#FA7E00" opacity="0.15" rx="4"/>
                 <line x1="560" y1="80" x2="560" y2="240" stroke="#FA7E00" stroke-width="8" opacity="0.2"/>
@@ -547,7 +708,9 @@
 
             <p style="text-align: center; font-size: 16px; color: var(--stone-muted); max-width: none;">AI-specifikus adatközponti kapacitás (MW)</p>
 
-            <p style="text-align: center; font-size: 18px; color: var(--stone-dark); max-width: none; margin-top: 8px;">Nincs dedikált szuverén AI-infrastruktúra</p>
+            <div style="margin-top: 8px; text-align: center;">
+                <span style="display: inline-block; font-size: 18px; color: var(--orange); font-weight: 500; border: 2px solid var(--orange); padding: 10px 28px; border-radius: 8px; max-width: none;">Nincs dedikált szuverén AI-infrastruktúra</span>
+            </div>
         </div>
 
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
@@ -684,7 +847,7 @@
                 <div style="background: var(--surface); padding: 32px; border-radius: 12px; border-top: 5px solid var(--text); display: flex; flex-direction: column;">
                     <div style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 52px; color: var(--text); margin-bottom: 12px;">03</div>
                     <h3 style="font-size: 24px; margin-bottom: 12px;">Szuverén kapacitás</h3>
-                    <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Országosan kell. Nekünk van kutatásunk erre.</p>
+                    <p style="font-size: 17px; color: var(--stone-dark); max-width: none; line-height: 1.5;">Országosan kell. Erről beszélni kell.</p>
                     <div style="margin-top: auto; padding-top: 16px;">
                         <div style="background: white; padding: 12px 16px; border-radius: 8px; text-align: center;">
                             <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 24px; color: var(--purple);">77–80 MW</span>
@@ -758,6 +921,37 @@
         });
 
         updateSlide();
+
+        /* Touch / Swipe navigation */
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            const dx = touchEndX - touchStartX;
+            const dy = touchEndY - touchStartY;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                if (dx < 0) nextSlide();
+                else prevSlide();
+            }
+        }, { passive: true });
+
+        /* Tap left/right halves to navigate on mobile */
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth > 768) return;
+            if (e.target.closest('.nav-dots, .nav-dot, a, button, iframe')) return;
+            const x = e.clientX;
+            if (x < window.innerWidth * 0.3) prevSlide();
+            else if (x > window.innerWidth * 0.7) nextSlide();
+        });
 
     </script>
 </body>
