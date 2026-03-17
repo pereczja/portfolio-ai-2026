@@ -89,6 +89,38 @@
 
         .source { position: absolute; bottom: 32px; left: var(--slide-pad-x); font-size: 12px; color: var(--stone-muted); }
 
+        /* Gap Badge */
+        .gap-badge {
+            position: absolute;
+            top: var(--slide-pad-y);
+            right: var(--slide-pad-x);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        .gap-number {
+            background: var(--orange);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'PP Editorial Old', Georgia, serif;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .gap-name {
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--orange);
+            font-weight: 500;
+        }
+
         /* So What Box */
         .so-what {
             background: var(--text); color: var(--bg);
@@ -282,6 +314,37 @@
                 gap: 12px !important;
             }
 
+            /* Gap badges on mobile */
+            .gap-badge {
+                top: 10px !important;
+                right: 20px !important;
+            }
+            .gap-number { width: 24px !important; height: 24px !important; font-size: 12px !important; }
+            .gap-name { font-size: 10px !important; letter-spacing: 1px !important; }
+
+            /* Slide 21: stacked layout on mobile */
+            .slide:last-of-type > div[style*="grid-template-columns: 1fr 48px 1fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+            .slide:last-of-type > div[style*="grid-template-columns: 1fr 48px 1fr"] > div:nth-child(2) {
+                transform: rotate(90deg);
+                margin: -8px auto;
+            }
+            .slide:last-of-type div[style*="font-size: 72px"] {
+                font-size: 48px !important;
+            }
+            .slide:last-of-type div[style*="font-size: 28px"] {
+                font-size: 18px !important;
+            }
+            .slide:last-of-type > p[style*="font-size: 26px"] {
+                font-size: 18px !important;
+            }
+            .slide:last-of-type div[style*="padding: 24px 40px"] {
+                padding: 16px 20px !important;
+                margin-top: 16px !important;
+            }
+
             /* Iframe overlay badges */
             .slide.iframe-slide div[style*="position: absolute; bottom: 60px"] {
                 bottom: 16px !important;
@@ -377,6 +440,7 @@
          SLIDE 4: PERCEPTION GAP
          ===================================================== -->
     <div class="slide">
+        <div class="gap-badge"><div class="gap-number">1</div><div class="gap-name">Percepciós gap</div></div>
         <h2>A Perception Gap</h2>
 
         <div class="merged-chart-container">
@@ -439,6 +503,7 @@
          SLIDE 7: K-SHAPED + CHAMATH
          ===================================================== -->
     <div class="slide">
+        <div class="gap-badge"><div class="gap-number">2</div><div class="gap-name">Adaptációs gap</div></div>
         <h2>K-alakú divergencia</h2>
 
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; gap: 24px;">
@@ -532,8 +597,9 @@
          SLIDE 12: DORSUM — AI Érettségi 1 (IFRAME)
          [GIT: cím → "A modell okosabb, mint ahogy használod"]
          ===================================================== -->
-    <div class="slide iframe-slide">
+    <div class="slide iframe-slide" style="position: relative;">
         <iframe src="dorsum-slides/ai-erettsegi-modell.html" loading="lazy"></iframe>
+        <div class="gap-badge"><div class="gap-number">3</div><div class="gap-name">Menedzsment gap</div></div>
     </div>
 
     <!-- =====================================================
@@ -637,6 +703,7 @@
          SLIDE 15: TOKEN EVOLUTION + SWE-BENCH — redesigned
          ===================================================== -->
     <div class="slide">
+        <div class="gap-badge"><div class="gap-number">4</div><div class="gap-name">Finanszírozási gap</div></div>
         <h2>Az agent 30x több compute-ot eszik</h2>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 28px; flex: 1; min-height: 0; margin-top: 12px;">
@@ -687,6 +754,7 @@
          SLIDE 16: HUNGARY — centered, visual weight
          ===================================================== -->
     <div class="slide">
+        <div class="gap-badge"><div class="gap-number">5</div><div class="gap-name">Compute gap</div></div>
         <h2>Magyarország versenyképességi hátránya</h2>
 
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 20px; min-height: 0;">
@@ -874,6 +942,82 @@
         <p style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 28px; color: var(--purple); margin-bottom: 6px;">Építési Napló</p>
         <p style="font-size: 18px; color: var(--stone-muted);">epitesinaplo.substack.com</p>
         <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp">
+    </div>
+
+    <!-- =====================================================
+         SLIDE 21: 5 GAP → 5 LEHETŐSÉG — Closing after closing
+         ===================================================== -->
+    <div class="slide dark" style="justify-content: center;">
+        <h2 style="color: var(--bg); text-align: center; margin-bottom: 28px;">5 gap <span style="color: var(--orange);">→</span> 5 lehetőség</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 48px 1fr; gap: 0; align-items: stretch; max-width: 1000px; margin: 0 auto; width: 100%;">
+            <!-- Gaps column -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(250,126,0,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--orange);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--orange); min-width: 20px;">1</span>
+                    <span style="font-size: 14px; color: var(--bg);">Percepciós gap</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(250,126,0,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--orange);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--orange); min-width: 20px;">2</span>
+                    <span style="font-size: 14px; color: var(--bg);">Adaptációs gap</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(250,126,0,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--orange);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--orange); min-width: 20px;">3</span>
+                    <span style="font-size: 14px; color: var(--bg);">Menedzsment gap</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(250,126,0,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--orange);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--orange); min-width: 20px;">4</span>
+                    <span style="font-size: 14px; color: var(--bg);">Finanszírozási gap</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(250,126,0,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--orange);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--orange); min-width: 20px;">5</span>
+                    <span style="font-size: 14px; color: var(--bg);">Compute gap</span>
+                </div>
+            </div>
+
+            <!-- Arrow column -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 40px; color: var(--purple);">→</span>
+            </div>
+
+            <!-- Opportunities column -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(120,63,243,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--purple);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--purple); min-width: 20px;">1</span>
+                    <span style="font-size: 14px; color: var(--bg);">Aki most lép, monopolhelyzetet épít</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(120,63,243,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--purple);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--purple); min-width: 20px;">2</span>
+                    <span style="font-size: 14px; color: var(--bg);">6x produktivitási előny elérhető</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(120,63,243,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--purple);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--purple); min-width: 20px;">3</span>
+                    <span style="font-size: 14px; color: var(--bg);">AI-first szervezet = versenyelőny</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(120,63,243,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--purple);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--purple); min-width: 20px;">4</span>
+                    <span style="font-size: 14px; color: var(--bg);">Compute-beruházás = stratégiai hozam</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(120,63,243,0.12); padding: 13px 18px; border-radius: 8px; border-left: 4px solid var(--purple);">
+                    <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 18px; color: var(--purple); min-width: 20px;">5</span>
+                    <span style="font-size: 14px; color: var(--bg);">Szuverén infra = nemzetgazdasági kulcs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Big number -->
+        <div style="text-align: center; margin-top: 32px; background: rgba(250,126,0,0.1); border: 2px solid var(--orange); padding: 24px 40px; border-radius: 16px; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <p style="font-size: 14px; color: var(--stone-muted); max-width: none; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px;">A tét: magyar munkaerőpiac AI-kitett bértömege</p>
+            <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 72px; color: var(--orange); line-height: 1;">~20 000</span>
+            <span style="font-family: 'PP Editorial Old', Georgia, serif; font-size: 28px; color: var(--orange);"> milliárd Ft/év</span>
+            <p style="font-size: 13px; color: var(--stone-muted); max-width: none; margin-top: 10px;">4.6M foglalkoztatott × 42% magas AI-kitettség × ~10M Ft/fő éves munkáltatói költség</p>
+        </div>
+
+        <!-- Closing line -->
+        <p style="text-align: center; font-family: 'PP Editorial Old', Georgia, serif; font-size: 26px; font-style: italic; color: var(--bg); max-width: 800px; margin: 24px auto 0; line-height: 1.4; opacity: 0.9;">
+            Ezek nem fenyegetések.<br>Ezek lehetőségek — ha most lépünk.
+        </p>
+        <img src="assets/1337 stamp.png" alt="The Intelligence Company" class="stamp" style="filter: brightness(0) invert(1);">
     </div>
 
     <!-- Navigation -->
